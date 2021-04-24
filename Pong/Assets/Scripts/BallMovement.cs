@@ -3,7 +3,7 @@
 public class BallMovement : MonoBehaviour
 {
     Rigidbody2D myrb;
-    private Vector2 velocity = new Vector2(8, 0);
+    private Vector2 velocity = new Vector2(8, 1);
     private Vector3 lastVelocity;
 
     private void Start()
