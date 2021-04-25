@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 1228957547}
   m_Layer: 0
   m_Name: BonusBar2
-  m_TagString: Untagged
+  m_TagString: OppBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -946,7 +946,7 @@ Transform:
   m_GameObject: {fileID: 1543724410}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7, y: 0.087, z: 0}
-  m_LocalScale: {x: 0.02, y: 1.54, z: 1}
+  m_LocalScale: {x: 0.02, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -1107,6 +1107,7 @@ GameObject:
   - component: {fileID: 1769894092}
   - component: {fileID: 1769894091}
   - component: {fileID: 1769894093}
+  - component: {fileID: 1769894094}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -1227,6 +1228,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82ac7a0de71eda42a3f5461220fc14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1769894094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769894088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ecc63a3f4b3b80488d4327fe910b560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opponentScoreText: {fileID: 237166438}
+  playerScoreText: {fileID: 205900584}
 --- !u!1 &1899758737
 GameObject:
   m_ObjectHideFlags: 0
