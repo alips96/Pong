@@ -1108,7 +1108,6 @@ GameObject:
   - component: {fileID: 1769894091}
   - component: {fileID: 1769894093}
   - component: {fileID: 1769894094}
-  - component: {fileID: 1769894095}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -1229,6 +1228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82ac7a0de71eda42a3f5461220fc14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballInitialSpeed: 5
+  setPointInterval: 2
+  speedPumpUpRate: 3
 --- !u!114 &1769894094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1243,19 +1245,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponentScoreText: {fileID: 237166438}
   playerScoreText: {fileID: 205900584}
---- !u!114 &1769894095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1769894088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db112b027a97b7f48a5e5cd194ff49c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ballInitialVelocity: {x: 8, y: 1}
 --- !u!1 &1899758737
 GameObject:
   m_ObjectHideFlags: 0
