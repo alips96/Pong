@@ -1230,7 +1230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballInitialSpeed: 5
   setPointInterval: 2
-  speedPumpUpRate: 3
+  acceleration: 0.3
+  maxSpeed: 15
 --- !u!114 &1769894094
 MonoBehaviour:
   m_ObjectHideFlags: 0

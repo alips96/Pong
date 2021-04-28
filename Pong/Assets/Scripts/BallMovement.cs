@@ -8,7 +8,8 @@ public class BallMovement : MonoBehaviour
 
     [SerializeField] private float ballInitialSpeed = 5f;
     [SerializeField] private int setPointInterval = 2;
-    [SerializeField] private float acceleration = 0.1f;
+    [SerializeField] private float acceleration = 0.3f;
+    [SerializeField] private float maxSpeed = 15f;
 
     private void Start()
     {
@@ -24,9 +25,21 @@ public class BallMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         float speed = lastVelocity.magnitude;
-        Vector3 direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
-        myrb.velocity = direction * Mathf.Max(speed, 0);
+        Vector3 myDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+        Vector2 myVelocity = myDirection * Mathf.Max(speed, 0);
+
+        if (lastVelocity.x * myDirection.x < 0) //if ball hits the players, because it toggles direction :)
+        {
+            myVelocity += myDirection.normalized.x * new Vector2(acceleration, 0);
+
+            if (Mathf.Abs(myVelocity.x) > maxSpeed) //if it reaches max speed.
+            {
+                myVelocity = new Vector2(maxSpeed * myDirection.normalized.x, myVelocity.y);
+            }
+        }
+
+        myrb.velocity = myVelocity;
     }
 
     private void OnTriggerEnter2D(Collider2D other) //The ball hits the bonus bars
