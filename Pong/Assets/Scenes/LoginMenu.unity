@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 147902146}
   - component: {fileID: 147902145}
   m_Layer: 5
-  m_Name: Password
+  m_Name: PasswordInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -590,7 +590,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &328869491
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -625,9 +625,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 541501379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 939d2f2a47398954d980241efba708d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 538d5aa74e2fac444bd6b6907f1b7dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emailInput: {fileID: 1748818097}
+  passwordInput: {fileID: 147902145}
+  statusMessage: {fileID: 328869490}
 --- !u!4 &541501381
 Transform:
   m_ObjectHideFlags: 0
@@ -723,7 +726,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 920928271}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 541501380}
+        m_MethodName: LoginPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &920928271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1171,7 +1185,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1191072440}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 541501380}
+        m_MethodName: ResetPassword
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1191072440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1356,7 +1381,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1381904297}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 541501380}
+        m_MethodName: RegisterPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1381904297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1641,7 +1677,7 @@ GameObject:
   - component: {fileID: 1748818098}
   - component: {fileID: 1748818097}
   m_Layer: 5
-  m_Name: EmailButton
+  m_Name: EmailInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
