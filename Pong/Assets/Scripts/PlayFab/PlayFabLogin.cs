@@ -8,6 +8,10 @@ public class PlayFabLogin : MonoBehaviour
     [SerializeField] private InputField emailInput;
     [SerializeField] private InputField passwordInput;
     [SerializeField] private Text statusMessage;
+    [SerializeField] private InputField usernameInput;
+
+    [SerializeField] private GameObject usernamePanel;
+    [SerializeField] private GameObject loginPanel;
 
     public void RegisterPlayer() //Called by Sign Up Button.
     {
@@ -21,10 +25,16 @@ public class PlayFabLogin : MonoBehaviour
         {
             Email = emailInput.text,
             Password = passwordInput.text,
-            RequireBothUsernameAndEmail = false
+            RequireBothUsernameAndEmail = false,
+
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetPlayerProfile = true
+            }
         };
 
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterationSuccess, OnError);
+        statusMessage.text = "Please wait..";
     }
 
     private void OnError(PlayFabError error)
@@ -35,7 +45,34 @@ public class PlayFabLogin : MonoBehaviour
 
     private void OnRegisterationSuccess(RegisterPlayFabUserResult result)
     {
-        statusMessage.text = "Registered and Logged in";
+        TogglePanels();
+        statusMessage.text = "Registered and Logged in!";
+    }
+
+    public void SetUsername() //Called by Username input field
+    {
+        if (string.IsNullOrWhiteSpace(usernameInput.text))
+            return;
+
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = usernameInput.text
+        };
+
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnUsernameCaptured, OnError);
+        statusMessage.text = "Please wait..";
+    }
+
+    private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
+    {
+        TogglePanels();
+        statusMessage.text = "Username captured!";
+    }
+
+    private void TogglePanels()
+    {
+        usernamePanel.SetActive(loginPanel.activeSelf);
+        loginPanel.SetActive(!usernamePanel.activeSelf);
     }
 
     public void LoginPlayer() //Called by Login button.
@@ -47,6 +84,7 @@ public class PlayFabLogin : MonoBehaviour
         };
 
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccessful, OnError);
+        statusMessage.text = "Please wait..";
     }
 
     private void OnLoginSuccessful(LoginResult result)
@@ -64,6 +102,7 @@ public class PlayFabLogin : MonoBehaviour
         };
 
         PlayFabClientAPI.SendAccountRecoveryEmail(request, OnPasswordReset, OnError);
+        statusMessage.text = "Please wait..";
     }
 
     private void OnPasswordReset(SendAccountRecoveryEmailResult result)
