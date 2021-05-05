@@ -2,7 +2,6 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
-using System;
 
 public class PlayFabMenu : MonoBehaviour
 {
@@ -10,6 +9,8 @@ public class PlayFabMenu : MonoBehaviour
 
     [SerializeField] private GameObject loginMenu;
     [SerializeField] private GameObject mainMenu;
+
+    [SerializeField] private InputField usernameInput;
 
     [SerializeField] private Text username;
 
@@ -40,5 +41,28 @@ public class PlayFabMenu : MonoBehaviour
     {
         loginMenu.SetActive(false);
         mainMenu.SetActive(true);
+    }
+
+    public void SetUsername() //Called by Username input field
+    {
+        if (string.IsNullOrWhiteSpace(usernameInput.text))
+            return;
+
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = usernameInput.text
+        };
+
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnUsernameCaptured, OnError);
+    }
+
+    private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
+    {
+        username.text = result.DisplayName;
+    }
+
+    private void OnError(PlayFabError error)
+    {
+        Debug.Log(error.GenerateErrorReport());
     }
 }
