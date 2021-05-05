@@ -1,8 +1,17 @@
 ﻿using UnityEngine;
+using PlayFab;
+using PlayFab.ClientModels;
+using UnityEngine.UI;
+using System;
 
 public class PlayFabMenu : MonoBehaviour
 {
     private PlayFabMaster playFabMasterScript;
+
+    [SerializeField] private GameObject loginMenu;
+    [SerializeField] private GameObject mainMenu;
+
+    [SerializeField] private Text username;
 
     private void OnEnable()
     {
@@ -21,8 +30,15 @@ public class PlayFabMenu : MonoBehaviour
         playFabMasterScript = GetComponent<PlayFabMaster>();
     }
 
-    private void SetupMainMenu()
+    private void SetupMainMenu(string displayName)
     {
-        Debug.Log("SetupSuccessfgullllllll");
+        ToggleMenus();
+        username.text = displayName;
+    }
+
+    private void ToggleMenus()
+    {
+        loginMenu.SetActive(false);
+        mainMenu.SetActive(true);
     }
 }

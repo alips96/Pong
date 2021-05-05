@@ -2,11 +2,11 @@
 
 public class PlayFabMaster : MonoBehaviour
 {
-    public delegate void GeneralEventHandler();
-    public event GeneralEventHandler EventUserLoggedIn;
+    public delegate void UserEventHandler(string name);
+    public event UserEventHandler EventUserLoggedIn;
 
-    public void CallEventUserLoggedIn()
+    public void CallEventUserLoggedIn(string displayName)
     {
-        EventUserLoggedIn.Invoke();
+        EventUserLoggedIn.Invoke(displayName);
     }
 }

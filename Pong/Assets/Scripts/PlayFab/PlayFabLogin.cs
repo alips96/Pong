@@ -73,7 +73,7 @@ public class PlayFabLogin : MonoBehaviour
     private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
     {
         TogglePanels();
-        playFabMasterScript.CallEventUserLoggedIn();
+        playFabMasterScript.CallEventUserLoggedIn(result.DisplayName);
     }
 
     private void TogglePanels()
@@ -87,7 +87,11 @@ public class PlayFabLogin : MonoBehaviour
         var request = new LoginWithEmailAddressRequest
         {
             Email = emailInput.text,
-            Password = passwordInput.text
+            Password = passwordInput.text,
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetPlayerProfile = true
+            }
         };
 
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccessful, OnError);
@@ -98,7 +102,8 @@ public class PlayFabLogin : MonoBehaviour
     {
         statusMessage.text = "Logged in!";
         Debug.Log("Logged in successfully!");
-        playFabMasterScript.CallEventUserLoggedIn();
+
+        playFabMasterScript.CallEventUserLoggedIn(result.InfoResultPayload.PlayerProfile.DisplayName);
     }
 
     public void ResetPassword() //Called by reset password button.
