@@ -100,7 +100,7 @@ public class PlayFabLogin : MonoBehaviour
 
     private void OnLoginSuccessful(LoginResult result)
     {
-        statusMessage.text = "Logged in!";
+        statusMessage.text = string.Empty;
         Debug.Log("Logged in successfully!");
 
         playFabMasterScript.CallEventUserLoggedIn(result.InfoResultPayload.PlayerProfile.DisplayName);
