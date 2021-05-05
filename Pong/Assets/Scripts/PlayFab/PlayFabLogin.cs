@@ -13,6 +13,13 @@ public class PlayFabLogin : MonoBehaviour
     [SerializeField] private GameObject usernamePanel;
     [SerializeField] private GameObject loginPanel;
 
+    private PlayFabMaster playFabMasterScript;
+
+    private void Start()
+    {
+        playFabMasterScript = GetComponent<PlayFabMaster>();
+    }
+
     public void RegisterPlayer() //Called by Sign Up Button.
     {
         if(passwordInput.text.Length < 6)
@@ -46,7 +53,7 @@ public class PlayFabLogin : MonoBehaviour
     private void OnRegisterationSuccess(RegisterPlayFabUserResult result)
     {
         TogglePanels();
-        statusMessage.text = "Registered and Logged in!";
+        statusMessage.text = "Registered and logged in!";
     }
 
     public void SetUsername() //Called by Username input field
@@ -66,7 +73,7 @@ public class PlayFabLogin : MonoBehaviour
     private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
     {
         TogglePanels();
-        statusMessage.text = "Username captured!";
+        playFabMasterScript.CallEventUserLoggedIn();
     }
 
     private void TogglePanels()
@@ -91,6 +98,7 @@ public class PlayFabLogin : MonoBehaviour
     {
         statusMessage.text = "Logged in!";
         Debug.Log("Logged in successfully!");
+        playFabMasterScript.CallEventUserLoggedIn();
     }
 
     public void ResetPassword() //Called by reset password button.
