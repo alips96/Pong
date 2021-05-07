@@ -3,10 +3,20 @@ using UnityEngine.UI;
 
 public class SP_RestartLevel : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private Text scoreText;
+    private PlayerMovement playerMovement;
 
+    [SerializeField] private Text scoreText;
     [SerializeField] private float ballInitialSpeed = 5f;
+
+    private void Start()
+    {
+        SetInitialReferences();
+    }
+
+    private void SetInitialReferences()
+    {
+        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+    }
 
     public void ResumeGame()
     {

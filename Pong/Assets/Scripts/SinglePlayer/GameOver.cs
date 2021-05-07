@@ -3,7 +3,8 @@
 public class GameOver : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private PlayerMovement playerMovement;
+    
+    private PlayerMovement playerMovement;
     private PlayFabMaster playFabMaster;
 
     private void OnEnable()
@@ -36,5 +37,6 @@ public class GameOver : MonoBehaviour
     private void SetInitialReferences()
     {
         playFabMaster = GameObject.Find("NetworkManager").GetComponent<PlayFabMaster>();
+        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
     }
 }
