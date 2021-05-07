@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using UnityEngine.UI;
 
 public class SP_Leaderboard : MonoBehaviour
 {
     private PlayFabMaster playFabMaster;
     [SerializeField] private int maxResultPlayerCount = 10;
+
+    [SerializeField] private GameObject rowPrefab;
+    [SerializeField] private Transform rowsParent;
+
+    [SerializeField] private GameObject leaderboardPanel;
 
     private void OnEnable()
     {
@@ -53,6 +59,8 @@ public class SP_Leaderboard : MonoBehaviour
 
     public void DisplayLeaderboard() //Called by highscore button
     {
+        leaderboardPanel.SetActive(true);
+
         var request = new GetLeaderboardRequest
         {
             StatisticName = "Highscore",
@@ -65,9 +73,24 @@ public class SP_Leaderboard : MonoBehaviour
 
     private void OnDisplayLeaderboard(GetLeaderboardResult result)
     {
+        foreach (Transform item in rowsParent)
+        {
+            Destroy(item.gameObject);
+        }
+
         foreach (var item in result.Leaderboard)
         {
-            Debug.Log(item.Position + " " + item.DisplayName + " " + item.StatValue);
+            AssignToMenuUI(item);
         }
+    }
+
+    private void AssignToMenuUI(PlayerLeaderboardEntry item)
+    {
+        GameObject go = Instantiate(rowPrefab, rowsParent);
+        Text[] texts = go.GetComponentsInChildren<Text>();
+
+        texts[0].text = (item.Position + 1).ToString();
+        texts[1].text = item.DisplayName;
+        texts[2].text = item.StatValue.ToString();
     }
 }
