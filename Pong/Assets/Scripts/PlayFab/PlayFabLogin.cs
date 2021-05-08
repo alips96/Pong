@@ -17,6 +17,16 @@ public class PlayFabLogin : MonoBehaviour
 
     private void Start()
     {
+        if (string.IsNullOrEmpty(PlayFabSettings.TitleId))
+        {
+            PlayFabSettings.TitleId = "B07E4";
+        }
+
+        SetInitialReferences();
+    }
+
+    private void SetInitialReferences()
+    {
         playFabMasterScript = GetComponent<PlayFabMaster>();
     }
 

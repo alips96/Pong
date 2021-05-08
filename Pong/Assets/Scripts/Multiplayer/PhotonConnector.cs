@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using System;
 
 public class PhotonConnector : MonoBehaviourPunCallbacks
 {
     [SerializeField] private byte maxPlayersInRoom = 2;
 
-    // Start is called before the first frame update
-    void Start()
+    private PlayFabMaster playFabMaster;
+
+    private void Start()
     {
-        string randomName = $"Tester{ Guid.NewGuid().ToString()}";
-        ConnectToPhoton(randomName);
+        SetInitialReferences();
+        playFabMaster.EventUserLoggedIn += ConnectToPhoton;
+    }
+
+    private void SetInitialReferences()
+    {
+        playFabMaster = transform.parent.GetComponent<PlayFabMaster>();
     }
 
     private void ConnectToPhoton(string nickName)
@@ -21,6 +26,11 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NickName = nickName;
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public void DisconnectFromPhoton() //Called by logout button.
+    {
+        PhotonNetwork.Disconnect();
     }
 
     public override void OnConnectedToMaster()
