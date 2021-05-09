@@ -695,7 +695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &353661968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,6 +1064,7 @@ GameObject:
   - component: {fileID: 541501383}
   - component: {fileID: 541501382}
   - component: {fileID: 541501384}
+  - component: {fileID: 541501385}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -1144,6 +1145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55fdd7e35e65834a9c34111b47a2354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &541501385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541501379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b47570c7b59d29479d66303e0a4a80b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &659950436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1154,6 +1167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 659950437}
   - component: {fileID: 659950438}
+  - component: {fileID: 659950439}
   m_Layer: 5
   m_Name: AddFriend
   m_TagString: Untagged
@@ -1177,10 +1191,10 @@ RectTransform:
   m_Father: {fileID: 853962496}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 93.93393, y: -60.347706}
+  m_SizeDelta: {x: 157.86786, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &659950438
 MonoBehaviour:
@@ -1207,6 +1221,19 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &659950439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659950436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2994825ef1c374cbfbfe827ae2baa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: 
 --- !u!1 &717647203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,10 +1527,10 @@ RectTransform:
   m_Father: {fileID: 659950437}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 137.58107, y: -25}
+  m_SizeDelta: {x: 40.57357, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &917753200
 MonoBehaviour:
@@ -1547,7 +1574,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 917753201}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 659950439}
+        m_MethodName: AddFriend
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &917753201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2126,6 +2164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1069100915}
   - component: {fileID: 1069100916}
+  - component: {fileID: 1069100917}
   m_Layer: 0
   m_Name: Photon Manager
   m_TagString: Untagged
@@ -2160,6 +2199,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPlayersInRoom: 2
+--- !u!114 &1069100917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069100914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13626904e0a3084aa84dde4be2ef97b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127848928
 GameObject:
   m_ObjectHideFlags: 0
@@ -3952,10 +4003,10 @@ RectTransform:
   m_Father: {fileID: 853962496}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 30}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 93.93393, y: -15}
+  m_SizeDelta: {x: 157.86786, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1696111526
 MonoBehaviour:
@@ -4306,6 +4357,7 @@ GameObject:
   - component: {fileID: 1811589075}
   - component: {fileID: 1811589074}
   - component: {fileID: 1811589073}
+  - component: {fileID: 1811589076}
   m_Layer: 5
   m_Name: FriendsScrollView
   m_TagString: Untagged
@@ -4328,10 +4380,10 @@ RectTransform:
   m_Father: {fileID: 853962496}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 200}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 93.93393, y: -190.6954}
+  m_SizeDelta: {x: 157.86786, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1811589073
 MonoBehaviour:
@@ -4400,6 +4452,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811589071}
   m_CullTransparentMesh: 0
+--- !u!114 &1811589076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811589071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58608c708dfb3564f82f6939946b72c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  friendContainer: {fileID: 1948899105}
+  friendPrefab: {fileID: 1826377572, guid: 9f7b8858f2e256e4a8f8d6453a8a0405, type: 3}
 --- !u!1 &1815316401
 GameObject:
   m_ObjectHideFlags: 0
@@ -4436,10 +4502,10 @@ RectTransform:
   m_Father: {fileID: 659950437}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 56.147144, y: -25}
+  m_SizeDelta: {x: 112.29429, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1815316403
 MonoBehaviour:
@@ -4493,7 +4559,18 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 659950439}
+        m_MethodName: SetAddFriendName
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

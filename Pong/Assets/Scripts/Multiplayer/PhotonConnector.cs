@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class PhotonConnector : MonoBehaviourPunCallbacks
 {
@@ -12,6 +13,11 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     {
         SetInitialReferences();
         playFabMaster.EventUserLoggedIn += ConnectToPhoton;
+    }
+
+    private void OnDestroy()
+    {
+        playFabMaster.EventUserLoggedIn -= ConnectToPhoton;
     }
 
     private void SetInitialReferences()
@@ -46,7 +52,8 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Connected to a photon lobby");
-        CreatePhotonRoom("TestRoom");
+
+        playFabMaster.CallEventGetPhotonFriends();
     }
 
     private void CreatePhotonRoom(string roomName)
