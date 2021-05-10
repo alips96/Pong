@@ -16,7 +16,7 @@ public class AddFriendUI : MonoBehaviour
         PlayFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
     }
 
-    public void SetAddFriendName(string someName)
+    public void SetAddFriendName(string someName) //Called by add friend input field.
     {
         displayName = someName;
     }
