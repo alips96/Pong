@@ -7,6 +7,7 @@ public class FriendsUI : MonoBehaviour
 {
     [SerializeField] private Text friendNameText;
     [SerializeField] private FriendInfo friendInfo;
+    [SerializeField] private Image friendStatusImage;
 
     private PlayFabMaster playFabMaster;
 
@@ -15,10 +16,19 @@ public class FriendsUI : MonoBehaviour
         playFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
     }
 
-    public void SetInitialReferences(FriendInfo friend)
+    public void SetUI(FriendInfo friend)
     {
         friendInfo = friend;
         friendNameText.text = friend.UserId;
+
+        if (friend.IsOnline)
+        {
+            friendStatusImage.color = Color.green;
+        }
+        else
+        {
+            friendStatusImage.color = Color.grey;
+        }
     }
 
     public void RemoveFriend()

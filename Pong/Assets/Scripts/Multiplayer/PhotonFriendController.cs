@@ -44,6 +44,8 @@ public class PhotonFriendController : MonoBehaviourPunCallbacks
 
     public override void OnFriendListUpdate(List<PhotonFriendInfo> friendList)
     {
+        if (friendList == null)
+            Debug.Log("NUKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
         PlayFabMaster.CallEventDisplayFriends(friendList);
     }
 }

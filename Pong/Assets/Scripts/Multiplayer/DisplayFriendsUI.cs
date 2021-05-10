@@ -35,7 +35,7 @@ public class DisplayFriendsUI : MonoBehaviour
         foreach (FriendInfo item in friendList)
         {
             FriendsUI friendUI = Instantiate(friendPrefab, friendContainer);
-            friendUI.SetInitialReferences(item);
+            friendUI.SetUI(item);
         }
     }
 
