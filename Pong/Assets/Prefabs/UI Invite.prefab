@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1860657680075743206}
   - component: {fileID: 1860657680075743204}
   - component: {fileID: 1860657680075743207}
-  - component: {fileID: 1880744466866237953}
+  - component: {fileID: 2358871989260130368}
   m_Layer: 5
   m_Name: UI Invite
   m_TagString: Untagged
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1880744466866237953
+--- !u!114 &2358871989260130368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,11 +113,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1860657680075743200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1963bac7de39774dadf1bc1bc396263, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d9f4dac5ccd3334ea13dfd5bed17408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   friendNameText: {fileID: 1860657680377234106}
-  friendStatusImage: {fileID: 0}
 --- !u!1 &1860657680377234100
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +130,7 @@ GameObject:
   - component: {fileID: 1860657680377234106}
   - component: {fileID: 1860657680377234104}
   m_Layer: 5
-  m_Name: Text
+  m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,7 +230,7 @@ GameObject:
   - component: {fileID: 1860657680689878231}
   - component: {fileID: 1860657680689878234}
   m_Layer: 5
-  m_Name: ButtonInvite
+  m_Name: ButtonAccept
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,8 +335,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
+      - m_Target: {fileID: 2358871989260130368}
+        m_MethodName: AcceptInvite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -381,7 +380,7 @@ GameObject:
   - component: {fileID: 802911479272409017}
   - component: {fileID: 6893528921472987876}
   m_Layer: 5
-  m_Name: ButtonRemove
+  m_Name: ButtonDecline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -486,8 +485,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
+      - m_Target: {fileID: 2358871989260130368}
+        m_MethodName: DeclineInvite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

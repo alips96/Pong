@@ -31,7 +31,13 @@ public class FriendsUI : MonoBehaviour
         }
     }
 
-    public void RemoveFriend()
+    public void InviteFriend() //Called by invite button
+    {
+        Debug.Log("Inviting friend Action" + friendInfo.UserId);
+        playFabMaster.CallEventInviteFriend(friendInfo.UserId);
+    }
+
+    public void RemoveFriend() //Called by remove button
     {
         playFabMaster.CallEventRemoveFriend(friendInfo.UserId);
     }

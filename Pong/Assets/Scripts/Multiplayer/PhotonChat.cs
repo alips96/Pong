@@ -15,11 +15,13 @@ public class PhotonChat : MonoBehaviour , IChatClientListener
         SetInitialReferences();
 
         playFabMaster.EventUserLoggedIn += ConnectToPhotonChat;
+        playFabMaster.EventInviteFriend += InviteFriend;
     }
 
     private void OnDisable()
     {
         playFabMaster.EventUserLoggedIn -= ConnectToPhotonChat;
+        playFabMaster.EventInviteFriend -= InviteFriend;
     }
 
     private void Update()
@@ -57,7 +59,6 @@ public class PhotonChat : MonoBehaviour , IChatClientListener
     public void OnConnected()
     {
         Debug.Log("Connected to the photon chat.");
-        SendDirectMessage("Nasim", "Hello Nasim!");
     }
 
     public void OnChatStateChange(ChatState state)
@@ -70,9 +71,9 @@ public class PhotonChat : MonoBehaviour , IChatClientListener
         
     }
 
-    public void SendDirectMessage(string receiver, string message)
+    public void InviteFriend(string receiver)
     {
-        chatClient.SendPrivateMessage(receiver, message);
+        chatClient.SendPrivateMessage(receiver, PhotonNetwork.CurrentRoom.Name);
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)
@@ -82,9 +83,10 @@ public class PhotonChat : MonoBehaviour , IChatClientListener
             string[] splittedNames = channelName.Split(new char[] { ':' }); //the format is [sender:receiver]
             string senderName = splittedNames[0];
 
-            if (sender.Equals(senderName, StringComparison.OrdinalIgnoreCase))
+            if (!sender.Equals(senderName, StringComparison.OrdinalIgnoreCase))
             {
                 Debug.Log(sender + ": " + message);
+                playFabMaster.CallEventInvitedToTheRoom(sender, message.ToString());
             }
         }
     }

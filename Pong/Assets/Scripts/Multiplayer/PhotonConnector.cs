@@ -13,11 +13,42 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     {
         SetInitialReferences();
         playFabMaster.EventUserLoggedIn += ConnectToPhoton;
+        playFabMaster.EventRoomInvitationAccepted += RoomInvitationAccepted;
     }
 
     private void OnDestroy()
     {
         playFabMaster.EventUserLoggedIn -= ConnectToPhoton;
+        playFabMaster.EventRoomInvitationAccepted -= RoomInvitationAccepted;
+    }
+
+    private void RoomInvitationAccepted(string roomName)
+    {
+        PlayerPrefs.SetString("PhotonRoom", roomName);
+
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        else
+        {
+            if (PhotonNetwork.InLobby)
+            {
+                JoinPlayerRoom();
+            }
+        }
+    }
+
+    private void JoinPlayerRoom()
+    {
+        string roomName = PlayerPrefs.GetString("PhotonRoom");
+        PlayerPrefs.SetString("PhotonRoom", "");
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public void OnCreateRoomButtonClicked(string roomName)
+    {
+        CreatePhotonRoom(roomName);
     }
 
     private void SetInitialReferences()
@@ -54,6 +85,13 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         Debug.Log("Connected to a photon lobby");
 
         playFabMaster.CallEventGetPhotonFriends();
+
+        string roomName = PlayerPrefs.GetString("PhotonRoom");
+
+        if (!string.IsNullOrEmpty(roomName))
+        {
+            JoinPlayerRoom();
+        }
     }
 
     private void CreatePhotonRoom(string roomName)

@@ -9,6 +9,12 @@ public class PlayFabMaster : MonoBehaviour
     public event UserEventHandler EventUserLoggedIn;
     public event UserEventHandler EventAddFriend;
     public event UserEventHandler EventRemoveFriend;
+    public event UserEventHandler EventInviteFriend;
+    public event UserEventHandler EventRoomInvitationAccepted;
+
+    public delegate void InvitationsStatusEventHandler(InviteUI instance);
+    public event InvitationsStatusEventHandler EventInviteAccepted;
+    public event InvitationsStatusEventHandler EventInviteDeclined;
 
     public delegate void ScoreEventHandler(int score);
     public event ScoreEventHandler EventGameOver;
@@ -17,16 +23,38 @@ public class PlayFabMaster : MonoBehaviour
     public event PlayFabFriendsEventHandler EventFriendsListUpdated;
 
     public delegate void GeneralEventHandler();
+    public event GeneralEventHandler EventGetPhotonFriends;
+
+    public delegate void PhotonFriendsHandler(List<Photon.Realtime.FriendInfo> friendList);
+    public event PhotonFriendsHandler EventDisplayFriends;
+
+    public delegate void RoomInvitationEventHandler(string sender, string roomName);
+    public event RoomInvitationEventHandler EventInvitedToTheRoom;
+
+    internal void CallEventRoomInvitationAccepted(string roomName)
+    {
+        EventRoomInvitationAccepted.Invoke(roomName);
+    }
+
+    internal void CallEventInviteAccepted(InviteUI instance)
+    {
+        EventInviteAccepted.Invoke(instance);
+    }
+
+    internal void CallEventInviteDeclined(InviteUI instance)
+    {
+        EventInviteDeclined.Invoke(instance);
+    }
 
     internal void CallEventRemoveFriend(string userId)
     {
         EventRemoveFriend.Invoke(userId);
     }
 
-    public event GeneralEventHandler EventGetPhotonFriends;
-
-    public delegate void PhotonFriendsHandler(List<Photon.Realtime.FriendInfo> friendList);
-    public event PhotonFriendsHandler EventDisplayFriends;
+    internal void CallEventInviteFriend(string userId)
+    {
+        EventInviteFriend.Invoke(userId);
+    }
 
     public void CallEventUserLoggedIn(string displayName)
     {
@@ -56,5 +84,10 @@ public class PlayFabMaster : MonoBehaviour
     internal void CallEventGetPhotonFriends()
     {
         EventGetPhotonFriends.Invoke();
+    }
+
+    internal void CallEventInvitedToTheRoom(string sender, string roomName)
+    {
+        EventInvitedToTheRoom.Invoke(sender, roomName);
     }
 }
