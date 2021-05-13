@@ -12,7 +12,7 @@ public class PhotonFriendController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private float refreshCooldown = 15f;
     [SerializeField]private float refreshCountdown = 0f;
-    [SerializeField] private List<PlayfabFriendInfo> friendList;
+    [SerializeField] private List<PlayfabFriendInfo> friendsList;
     public static Action<List<PhotonFriendInfo>> OnDisplayFriends = delegate { };
 
     [SerializeField] private GameObject friendsContainer;
@@ -22,7 +22,7 @@ public class PhotonFriendController : MonoBehaviourPunCallbacks
     private void Start()
     {
         SetInitialReferences();
-        friendList = new List<PlayfabFriendInfo>();
+        friendsList = new List<PlayfabFriendInfo>();
         playFabMaster.EventFriendsListUpdated += HandleFriendsUpdated;
     }
 
@@ -45,17 +45,21 @@ public class PhotonFriendController : MonoBehaviourPunCallbacks
         else
         {
             refreshCountdown = refreshCooldown;
-            if (PhotonNetwork.InRoom) return;
 
-            if(friendsContainer.activeInHierarchy)
-                FindPhotonFriends(friendList);
+            if (PhotonNetwork.InRoom)
+            {
+                return;
+            }
+
+            if (friendsContainer.activeInHierarchy)
+                FindPhotonFriends(friendsList);
         }
     }
 
     private void HandleFriendsUpdated(List<PlayfabFriendInfo> friends)
     {
-        friendList = friends;
-        FindPhotonFriends(friendList);
+        friendsList = friends;
+        FindPhotonFriends(friendsList);
     }
 
     private void FindPhotonFriends(List<PlayfabFriendInfo> friends)

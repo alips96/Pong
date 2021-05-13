@@ -6,8 +6,9 @@ using UnityEngine;
 public class FriendsUI : MonoBehaviour
 {
     [SerializeField] private Text friendNameText;
-    [SerializeField] private FriendInfo friendInfo;
     [SerializeField] private Image friendStatusImage;
+
+    private FriendInfo friendInfo;
 
     private PlayFabMaster playFabMaster;
 
@@ -33,8 +34,16 @@ public class FriendsUI : MonoBehaviour
 
     public void InviteFriend() //Called by invite button
     {
-        Debug.Log("Inviting friend Action" + friendInfo.UserId);
-        playFabMaster.CallEventInviteFriend(friendInfo.UserId);
+        if (Photon.Pun.PhotonNetwork.InRoom)
+        {
+            Debug.Log("Inviting friend Action" + friendInfo.UserId);
+            playFabMaster.CallEventInviteFriend(friendInfo.UserId);
+        }
+        else
+        {
+            //connect to the room first
+            Debug.Log("You should connect to a room first to be enable to invite your friends.");
+        }
     }
 
     public void RemoveFriend() //Called by remove button

@@ -7,6 +7,9 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
 {
     [SerializeField] private byte maxPlayersInRoom = 2;
 
+    [SerializeField] private GameObject joinRoomButton;
+    [SerializeField] private GameObject leaveRoomButton;
+
     private PlayFabMaster playFabMaster;
 
     private void Start()
@@ -46,9 +49,21 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(roomName);
     }
 
-    public void OnCreateRoomButtonClicked(string roomName)
+    public void OnCreateRoomButtonClicked() //Called by join room button
     {
-        CreatePhotonRoom(roomName);
+        if (PhotonNetwork.InLobby)
+        {
+            CreatePhotonRoom(PhotonNetwork.LocalPlayer.UserId);
+            joinRoomButton.SetActive(false);
+        }
+    }
+
+    public void OnLeaveRoomButtonClicked() //Called by Leave room button
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
     }
 
     private void SetInitialReferences()
@@ -92,6 +107,10 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         {
             JoinPlayerRoom();
         }
+        else
+        {
+            joinRoomButton.SetActive(true);
+        }
     }
 
     private void CreatePhotonRoom(string roomName)
@@ -112,11 +131,16 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined the photon room named " + PhotonNetwork.CurrentRoom.Name);
+
+        leaveRoomButton.SetActive(true);
     }
 
     public override void OnLeftRoom()
     {
         Debug.Log("You have left a photon room");
+
+        leaveRoomButton.SetActive(false);
+        joinRoomButton.SetActive(true);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -127,6 +151,13 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("Another player joined the room: " + newPlayer.UserId);
+
+        //if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersInRoom)
+        //{
+        //    Debug.Log(PhotonNetwork.LocalPlayer.NickName + "Vs " + newPlayer.NickName);
+        //    PhotonNetwork.CurrentRoom.IsOpen = false;
+        //    PhotonNetwork.LoadLevel("Test");
+        //}
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
