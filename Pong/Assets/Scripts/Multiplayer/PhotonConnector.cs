@@ -152,12 +152,12 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     {
         Debug.Log("Another player joined the room: " + newPlayer.UserId);
 
-        //if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersInRoom)
-        //{
-        //    Debug.Log(PhotonNetwork.LocalPlayer.NickName + "Vs " + newPlayer.NickName);
-        //    PhotonNetwork.CurrentRoom.IsOpen = false;
-        //    PhotonNetwork.LoadLevel("Test");
-        //}
+        if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersInRoom)
+        {
+            Debug.Log(PhotonNetwork.LocalPlayer.NickName + "Vs " + newPlayer.NickName);
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LoadLevel(2); //Multiplayer Scence
+        }
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
