@@ -1,5 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class BallMovement : MonoBehaviour
 {
@@ -11,10 +14,47 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private float acceleration = 0.3f;
     [SerializeField] private float maxSpeed = 15f;
 
-    private void Start()
+    private void OnEnable()
     {
         myrb = GetComponent<Rigidbody2D>();
-        myrb.velocity = new Vector2(ballInitialSpeed, Random.Range(-2f, 2f));
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(WaitForTheClientToJoin());
+            SendInitialVelocityToClients();
+        }
+
+        PhotonNetwork.NetworkingClient.EventReceived += SetVelocity;
+        PhotonNetwork.NetworkingClient.EventReceived += ResetPosAndSpeed;
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= SetVelocity;
+        PhotonNetwork.NetworkingClient.EventReceived -= ResetPosAndSpeed;
+    }
+
+    private void SetVelocity(EventData obj)
+    {
+        if (obj.Code == 0)
+        {
+            float[] args = (float[])obj.CustomData; // [0]: random number, [1]: 1 for positive direction and -1 for the negative one.
+            myrb.velocity = new Vector2(ballInitialSpeed * args[1], args[0]);
+        }
+    }
+
+    private void SendInitialVelocityToClients()
+    {
+        float[] eventArgs = new float[2] { Random.Range(-2f, 2f), 1 }; // first argument is the velocity. second one determines the direction.
+
+        PhotonNetwork.RaiseEvent(0, eventArgs,
+            new RaiseEventOptions { Receivers = ReceiverGroup.All },
+            new SendOptions { Reliability = true });
+    }
+
+    IEnumerator WaitForTheClientToJoin()
+    {
+        yield return new WaitUntil(() => PhotonNetwork.CurrentRoom.PlayerCount == 2);
     }
 
     private void Update()
@@ -44,12 +84,40 @@ public class BallMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) //The ball hits the bonus bars
     {
-        ResetBallSpeedAndPosition();
-
-        StartCoroutine(RestartSetPoint(setPointInterval, other.tag));
+        if (other.tag.Equals("OppBar"))
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.RaiseEvent(1, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
+            }
+            else
+            {
+                PhotonNetwork.RaiseEvent(3, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
+            }
+        }
+        else
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.RaiseEvent(1, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
+            }
+            else
+            {
+                PhotonNetwork.RaiseEvent(3, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
+            }
+        }
     }
 
-    private void ResetBallSpeedAndPosition()
+    private void ResetPosAndSpeed(EventData obj)
+    {
+        if (obj.Code == 1 || obj.Code == 3)
+        {
+            SetToZero();
+            StartCoroutine(RestartSetPoint(setPointInterval, obj.CustomData.ToString()));
+        }
+    }
+
+    private void SetToZero()
     {
         transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         transform.position = Vector3.zero;
@@ -59,14 +127,26 @@ public class BallMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
 
-        if (tag.Equals("OppBar"))
+        if (PhotonNetwork.IsMasterClient)
         {
-            transform.GetComponent<Rigidbody2D>().velocity = new Vector2(ballInitialSpeed, Random.Range(-2f, 2f));
-        }
-        else
-        {
-            transform.GetComponent<Rigidbody2D>().velocity = new Vector2(-ballInitialSpeed, Random.Range(-2f, 2f));
-        }
+            float randomNumber = Random.Range(-2f, 2f);
 
+            if (tag.Equals("OppBar"))
+            {
+                float[] eventArgs = new float[2] { randomNumber, 1f }; // first argument is the velocity. second one determines the direction.
+
+                PhotonNetwork.RaiseEvent(0, eventArgs,
+                    new RaiseEventOptions { Receivers = ReceiverGroup.All },
+                    new SendOptions { Reliability = true });
+            }
+            else
+            {
+                float[] eventArgs = new float[2] { randomNumber, -1f }; // first argument is the velocity. second one determines the direction.
+
+                PhotonNetwork.RaiseEvent(0, eventArgs,
+                    new RaiseEventOptions { Receivers = ReceiverGroup.All },
+                    new SendOptions { Reliability = true });
+            }
+        }
     }
 }
