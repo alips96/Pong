@@ -321,8 +321,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -34.089}
-  m_SizeDelta: {x: 0, y: 68.17732}
+  m_AnchoredPosition: {x: 0, y: -43.54}
+  m_SizeDelta: {x: 0, y: 87.08319}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &205900582
 GameObject:
@@ -1047,7 +1047,6 @@ GameObject:
   - component: {fileID: 546691784}
   - component: {fileID: 546691786}
   - component: {fileID: 546691785}
-  - component: {fileID: 546691787}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -1115,20 +1114,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 546691783}
   m_CullTransparentMesh: 0
---- !u!114 &546691787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546691783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65ef5774c23b9504a918228c7b1750a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusText: {fileID: 603705056}
-  winnerText: {fileID: 420367431}
 --- !u!1 &603705054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,7 +1343,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 546691787}
+      - m_Target: {fileID: 1037653488}
         m_MethodName: ReplayButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -1496,6 +1481,7 @@ GameObject:
   - component: {fileID: 1037653484}
   - component: {fileID: 1037653486}
   - component: {fileID: 1037653487}
+  - component: {fileID: 1037653488}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -1560,6 +1546,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverMenu: {fileID: 13885371}
   ballTransform: {fileID: 1769894090}
+--- !u!114 &1037653488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037653483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65ef5774c23b9504a918228c7b1750a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusText: {fileID: 603705056}
+  winnerText: {fileID: 420367431}
 --- !u!1 &1163185286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,8 +1594,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 19.099976, y: -34.089}
-  m_SizeDelta: {x: 38.18518, y: 68.17729}
+  m_AnchoredPosition: {x: 25.29, y: -43.54142}
+  m_SizeDelta: {x: 50.58, y: 87.08284}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1163185288
 MonoBehaviour:
@@ -1977,7 +1977,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 546691787}
+      - m_Target: {fileID: 1037653488}
         m_MethodName: HomeButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -2057,10 +2057,10 @@ RectTransform:
   m_Father: {fileID: 120554380}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 748.91, y: -34.089}
-  m_SizeDelta: {x: 38.18518, y: 68.17729}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -25.290009, y: -43.54142}
+  m_SizeDelta: {x: 50.580017, y: 87.08284}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1695730853
 MonoBehaviour:
@@ -2237,8 +2237,6 @@ MonoBehaviour:
   setPointInterval: 2
   acceleration: 0.3
   maxSpeed: 15
-  playerCollider: {fileID: 259096061}
-  opponentCollider: {fileID: 1228957547}
 --- !u!114 &1769894094
 MonoBehaviour:
   m_ObjectHideFlags: 0

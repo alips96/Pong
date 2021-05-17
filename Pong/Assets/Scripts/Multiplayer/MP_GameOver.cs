@@ -18,7 +18,7 @@ public class MP_GameOver : MonoBehaviour
 
     private void OnDisable()
     {
-        PhotonNetwork.NetworkingClient.EventReceived += ApplyGameOver;
+        PhotonNetwork.NetworkingClient.EventReceived -= ApplyGameOver;
     }
 
     private void ApplyGameOver(EventData obj)
