@@ -2251,7 +2251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponentScoreText: {fileID: 237166438}
   playerScoreText: {fileID: 205900584}
-  winScore: 10
+  winScore: 3
 --- !u!1 &1899758737
 GameObject:
   m_ObjectHideFlags: 0

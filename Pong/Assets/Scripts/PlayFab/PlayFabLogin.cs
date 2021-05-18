@@ -2,6 +2,7 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class PlayFabLogin : MonoBehaviour
 {
@@ -23,6 +24,25 @@ public class PlayFabLogin : MonoBehaviour
         }
 
         SetInitialReferences();
+        CheckIfLeaveRoomRequired();
+        CheckIfLoginReqired();
+    }
+
+    private void CheckIfLeaveRoomRequired() //we may jump from multiplayer to main menu.
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    private void CheckIfLoginReqired()
+    {
+        if (!PlayerPrefs.GetString("LOGGEDIN").Equals(""))
+        {
+            playFabMasterScript.CallEventUserLoggedIn(PlayerPrefs.GetString("LOGGEDIN"));
+            PlayerPrefs.SetString("LOGGEDIN", "");
+        }
     }
 
     private void SetInitialReferences()
@@ -32,7 +52,7 @@ public class PlayFabLogin : MonoBehaviour
 
     public void RegisterPlayer() //Called by Sign Up Button.
     {
-        if(passwordInput.text.Length < 6)
+        if (passwordInput.text.Length < 6)
         {
             statusMessage.text = "Password should be at least 6 characters!";
             return;

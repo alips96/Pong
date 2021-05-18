@@ -3,7 +3,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
-using System;
+using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -13,13 +13,11 @@ public class GameOverUI : MonoBehaviour
     private void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += SetWinnerText;
-        PhotonNetwork.NetworkingClient.EventReceived += LoadScene;
     }
 
     private void OnDisable()
     {
         PhotonNetwork.NetworkingClient.EventReceived -= SetWinnerText;
-        PhotonNetwork.NetworkingClient.EventReceived -= LoadScene;
     }
 
     private void SetWinnerText(EventData obj)
@@ -69,15 +67,7 @@ public class GameOverUI : MonoBehaviour
 
     public void HomeButtonClicked() //Called by home button.
     {
-        //PhotonNetwork.LeaveRoom();
-        PhotonNetwork.RaiseEvent(4, 0, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
-    }
-
-    private void LoadScene(EventData obj)
-    {
-        if(obj.Code.Equals(4))
-        {
-            PhotonNetwork.LoadLevel((int) obj.CustomData); //Load scene.
-        }
+        PlayerPrefs.SetString("LOGGEDIN", PhotonNetwork.LocalPlayer.NickName);
+        SceneManager.LoadScene(0);
     }
 }
