@@ -9,9 +9,12 @@ public class PlayerMovement : MonoBehaviourPun
 
     private void Start()
     {
-        if (!photonView.IsMine)
+        if(GetComponent<PhotonView>() != null)
         {
-            enabled = false;
+            if (!photonView.IsMine)
+            {
+                enabled = false;
+            }
         }
 
         myrb = GetComponent<Rigidbody2D>();

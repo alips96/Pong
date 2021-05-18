@@ -103,7 +103,11 @@ public class PlayFabLogin : MonoBehaviour
     private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
     {
         TogglePanels();
-        playFabMasterScript.CallEventUserLoggedIn(result.DisplayName);
+
+        string displayName = result.DisplayName;
+        PlayerPrefs.SetString("DISPLAYNAME", displayName);
+
+        playFabMasterScript.CallEventUserLoggedIn(displayName);
     }
 
     private void TogglePanels()
@@ -133,7 +137,10 @@ public class PlayFabLogin : MonoBehaviour
         statusMessage.text = string.Empty;
         Debug.Log("Logged in successfully!");
 
-        playFabMasterScript.CallEventUserLoggedIn(result.InfoResultPayload.PlayerProfile.DisplayName);
+        string displayName = result.InfoResultPayload.PlayerProfile.DisplayName;
+        PlayerPrefs.SetString("DISPLAYNAME", displayName);
+
+        playFabMasterScript.CallEventUserLoggedIn(displayName);
     }
 
     public void ResetPassword() //Called by reset password button.
