@@ -38,10 +38,12 @@ public class PlayFabLogin : MonoBehaviour
 
     private void CheckIfLoginReqired()
     {
-        if (!PlayerPrefs.GetString("LOGGEDIN").Equals(""))
+        string name = PlayerPrefs.GetString("LOGGEDIN");
+
+        if (!string.IsNullOrEmpty(name))
         {
-            playFabMasterScript.CallEventUserLoggedIn(PlayerPrefs.GetString("LOGGEDIN"));
-            PlayerPrefs.SetString("LOGGEDIN", "");
+            playFabMasterScript.CallEventUserLoggedIn(name);
+            PlayerPrefs.SetString("LOGGEDIN", string.Empty);
         }
     }
 

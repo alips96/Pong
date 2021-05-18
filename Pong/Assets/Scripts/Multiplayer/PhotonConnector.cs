@@ -69,6 +69,7 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
     private void SetInitialReferences()
     {
         playFabMaster = transform.parent.GetComponent<PlayFabMaster>();
+        PhotonNetwork.AutomaticallySyncScene = true; //To scync scenes again. it was turned off previously.
     }
 
     private void ConnectToPhoton(string nickName)
@@ -82,6 +83,7 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
 
     public void DisconnectFromPhoton() //Called by logout button.
     {
+        PlayerPrefs.DeleteAll();
         PhotonNetwork.Disconnect();
     }
 

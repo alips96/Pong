@@ -29,8 +29,7 @@ public class SP_RestartLevel : MonoBehaviour
 
     public void ToMainMenu() //Called by main menu button.
     {
-        string name = PlayerPrefs.GetString("DISPLAYNAME");
-        PlayerPrefs.SetString("LOGGEDIN", name);
+        PlayerPrefs.SetString("LOGGEDIN", PlayerPrefs.GetString("DISPLAYNAME"));
         SceneManager.LoadScene(0);
     }
 }

@@ -13,11 +13,13 @@ public class GameOverUI : MonoBehaviour
     private void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += SetWinnerText;
+        PhotonNetwork.NetworkingClient.EventReceived += LoadScene;
     }
 
     private void OnDisable()
     {
         PhotonNetwork.NetworkingClient.EventReceived -= SetWinnerText;
+        PhotonNetwork.NetworkingClient.EventReceived -= LoadScene;
     }
 
     private void SetWinnerText(EventData obj)
@@ -68,6 +70,15 @@ public class GameOverUI : MonoBehaviour
     public void HomeButtonClicked() //Called by home button.
     {
         PlayerPrefs.SetString("LOGGEDIN", PhotonNetwork.LocalPlayer.NickName);
+        PhotonNetwork.AutomaticallySyncScene = false; //to make clients independent for a while.
         SceneManager.LoadScene(0);
+    }
+
+    private void LoadScene(EventData obj)
+    {
+        if (obj.Code.Equals(4))
+        {
+            PhotonNetwork.LoadLevel((int)obj.CustomData); //Load scene.
+        }
     }
 }
