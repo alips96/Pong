@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -70,6 +71,24 @@ public class GameOverUI : MonoBehaviour
     public void HomeButtonClicked() //Called by home button.
     {
         PlayerPrefs.SetString("LOGGEDIN", PhotonNetwork.LocalPlayer.NickName);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.AutomaticallySyncScene = false; //to make clients independent for a while.
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
+            Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount + "and i am master client" + PhotonNetwork.IsMasterClient);
+            StartCoroutine(GotoLoginScene());
+        }
+
+    }
+
+    private IEnumerator GotoLoginScene()
+    {
+        yield return new WaitUntil(() => PhotonNetwork.IsMasterClient);
         PhotonNetwork.AutomaticallySyncScene = false; //to make clients independent for a while.
         SceneManager.LoadScene(0);
     }
