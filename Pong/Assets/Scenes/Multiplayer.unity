@@ -1482,6 +1482,7 @@ GameObject:
   - component: {fileID: 1037653486}
   - component: {fileID: 1037653487}
   - component: {fileID: 1037653488}
+  - component: {fileID: 1037653489}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -1560,6 +1561,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusText: {fileID: 603705056}
   winnerText: {fileID: 420367431}
+--- !u!114 &1037653489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037653483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8538e0dfcc106a244986c45a8fddca5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1163185286
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,7 +2264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponentScoreText: {fileID: 237166438}
   playerScoreText: {fileID: 205900584}
-  winScore: 3
+  winScore: 1
 --- !u!1 &1899758737
 GameObject:
   m_ObjectHideFlags: 0
