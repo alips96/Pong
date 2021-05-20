@@ -39,6 +39,7 @@ public class PlayFabLogin : MonoBehaviour
     private void CheckIfLoginReqired()
     {
         string name = PlayerPrefs.GetString("LOGGEDIN");
+        Debug.Log("CheckIfLoginReqired: " + name);
 
         if (!string.IsNullOrEmpty(name))
         {

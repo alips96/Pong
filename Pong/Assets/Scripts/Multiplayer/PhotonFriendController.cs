@@ -67,7 +67,7 @@ public class PhotonFriendController : MonoBehaviourPunCallbacks
         {
             string[] friendDisplayNames = friends.Select(f => f.TitleDisplayName).ToArray();
 
-            if(PhotonNetwork.IsConnectedAndReady && !PhotonNetwork.InRoom)
+            if(PhotonNetwork.IsConnectedAndReady && !PhotonNetwork.InRoom && PhotonNetwork.InLobby)
                 PhotonNetwork.FindFriends(friendDisplayNames);
         }
         else

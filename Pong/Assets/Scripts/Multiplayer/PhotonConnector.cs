@@ -9,6 +9,7 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
 
     [SerializeField] private GameObject joinRoomButton;
     [SerializeField] private GameObject leaveRoomButton;
+    [SerializeField] private GameObject singlePlayerButton;
 
     private PlayFabMaster playFabMaster;
 
@@ -87,6 +88,11 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect();
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("Disconnected from photon: " + cause);
+    }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to the photon master server");
@@ -135,6 +141,7 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         Debug.Log("Joined the photon room named " + PhotonNetwork.CurrentRoom.Name);
 
         leaveRoomButton.SetActive(true);
+        singlePlayerButton.SetActive(true);
     }
 
     public override void OnLeftRoom()
@@ -142,6 +149,7 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
         Debug.Log("You have left a photon room");
 
         leaveRoomButton.SetActive(false);
+        singlePlayerButton.SetActive(false);
         joinRoomButton.SetActive(true);
     }
 
