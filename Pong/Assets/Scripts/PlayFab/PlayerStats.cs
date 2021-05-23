@@ -8,7 +8,7 @@ using System;
 
 public class PlayerStats : MonoBehaviour
 {
-    private int lossCount, winCount;
+    private int lossCount, winCount, matchCount;
     private bool hasMasterPlayerWon;
 
     private void OnEnable()
@@ -34,6 +34,7 @@ public class PlayerStats : MonoBehaviour
     {
         lossCount = GetLossCount(result);
         winCount = GetWinCount(result);
+        matchCount = GetTotalMatchCount(result);
 
         SetWinner();
     }
@@ -72,7 +73,8 @@ public class PlayerStats : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"Lose", (++lossCount).ToString() }
+                {"Lose", (++lossCount).ToString() },
+                {"Match", (++matchCount).ToString() }
             }
         };
 
@@ -85,7 +87,8 @@ public class PlayerStats : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"Win", (++winCount).ToString() }
+                {"Win", (++winCount).ToString() },
+                {"Match", (++matchCount).ToString() }
             }
         };
 
@@ -102,6 +105,16 @@ public class PlayerStats : MonoBehaviour
         if (result.Data.ContainsKey("Win"))
         {
             return Convert.ToInt32(result.Data["Win"].Value);
+        }
+
+        return 0;
+    }
+
+    private int GetTotalMatchCount(GetUserDataResult result)
+    {
+        if (result.Data.ContainsKey("Match"))
+        {
+            return Convert.ToInt32(result.Data["Match"].Value);
         }
 
         return 0;
