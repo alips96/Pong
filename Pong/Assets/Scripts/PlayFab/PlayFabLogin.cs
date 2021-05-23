@@ -2,6 +2,7 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class PlayFabLogin : MonoBehaviour
 {
@@ -17,12 +18,44 @@ public class PlayFabLogin : MonoBehaviour
 
     private void Start()
     {
+        if (string.IsNullOrEmpty(PlayFabSettings.TitleId))
+        {
+            PlayFabSettings.TitleId = "B07E4";
+        }
+
+        SetInitialReferences();
+        CheckIfLeaveRoomRequired();
+        CheckIfLoginReqired();
+    }
+
+    private void CheckIfLeaveRoomRequired() //we may jump from multiplayer to main menu.
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    private void CheckIfLoginReqired()
+    {
+        string name = PlayerPrefs.GetString("LOGGEDIN");
+        Debug.Log("CheckIfLoginReqired: " + name);
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            playFabMasterScript.CallEventUserLoggedIn(name);
+            PlayerPrefs.SetString("LOGGEDIN", string.Empty);
+        }
+    }
+
+    private void SetInitialReferences()
+    {
         playFabMasterScript = GetComponent<PlayFabMaster>();
     }
 
     public void RegisterPlayer() //Called by Sign Up Button.
     {
-        if(passwordInput.text.Length < 6)
+        if (passwordInput.text.Length < 6)
         {
             statusMessage.text = "Password should be at least 6 characters!";
             return;
@@ -73,7 +106,11 @@ public class PlayFabLogin : MonoBehaviour
     private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
     {
         TogglePanels();
-        playFabMasterScript.CallEventUserLoggedIn(result.DisplayName);
+
+        string displayName = result.DisplayName;
+        PlayerPrefs.SetString("DISPLAYNAME", displayName);
+
+        playFabMasterScript.CallEventUserLoggedIn(displayName);
     }
 
     private void TogglePanels()
@@ -103,7 +140,10 @@ public class PlayFabLogin : MonoBehaviour
         statusMessage.text = string.Empty;
         Debug.Log("Logged in successfully!");
 
-        playFabMasterScript.CallEventUserLoggedIn(result.InfoResultPayload.PlayerProfile.DisplayName);
+        string displayName = result.InfoResultPayload.PlayerProfile.DisplayName;
+        PlayerPrefs.SetString("DISPLAYNAME", displayName);
+
+        playFabMasterScript.CallEventUserLoggedIn(displayName);
     }
 
     public void ResetPassword() //Called by reset password button.

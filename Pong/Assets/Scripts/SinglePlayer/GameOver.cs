@@ -36,7 +36,7 @@ public class GameOver : MonoBehaviour
 
     private void SetInitialReferences()
     {
-        playFabMaster = GameObject.Find("NetworkManager").GetComponent<PlayFabMaster>();
+        playFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
     }
 }

@@ -58,7 +58,10 @@ public class PlayFabMenu : MonoBehaviour
 
     private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
     {
-        username.text = result.DisplayName;
+        string displayName = result.DisplayName;
+
+        Photon.Pun.PhotonNetwork.NickName = displayName;
+        username.text = displayName;
     }
 
     private void OnError(PlayFabError error)

@@ -11,7 +11,7 @@ public class SP_ScoreCounter : MonoBehaviour
 
     private void Start()
     {
-        playfabMasterScript = GameObject.Find("NetworkManager").GetComponent<PlayFabMaster>();
+        playfabMasterScript = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
