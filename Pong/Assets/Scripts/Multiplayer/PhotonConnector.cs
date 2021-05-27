@@ -164,8 +164,14 @@ public class PhotonConnector : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersInRoom)
         {
-            Debug.Log(PhotonNetwork.LocalPlayer.NickName + "Vs " + newPlayer.NickName);
+            string myName = PhotonNetwork.LocalPlayer.NickName;
+            string opponentName = newPlayer.NickName;
+
+            Debug.Log(myName + " Vs " + opponentName);
+
             PhotonNetwork.CurrentRoom.IsOpen = false;
+            playFabMaster.CallEventDiscordJoinMessage(myName, opponentName);
+
             PhotonNetwork.LoadLevel(2); //Multiplayer Scence
         }
     }

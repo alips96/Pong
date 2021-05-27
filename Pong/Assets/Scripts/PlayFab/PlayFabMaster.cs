@@ -30,6 +30,7 @@ public class PlayFabMaster : MonoBehaviour
 
     public delegate void RoomInvitationEventHandler(string sender, string roomName);
     public event RoomInvitationEventHandler EventInvitedToTheRoom;
+    public event RoomInvitationEventHandler EventDiscordJoinMessage;
 
     internal void CallEventRoomInvitationAccepted(string roomName)
     {
@@ -89,5 +90,10 @@ public class PlayFabMaster : MonoBehaviour
     internal void CallEventInvitedToTheRoom(string sender, string roomName)
     {
         EventInvitedToTheRoom.Invoke(sender, roomName);
+    }
+
+    internal void CallEventDiscordJoinMessage(string myName, string opponentName)
+    {
+        EventDiscordJoinMessage.Invoke(myName, opponentName);
     }
 }
