@@ -64,7 +64,7 @@ public class GameOverUI : MonoBehaviour
         }
         else
         {
-            statusText.text = "the other player has left the room!";
+            statusText.text = "The other player has left the room!";
         }
     }
 
