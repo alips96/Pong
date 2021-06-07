@@ -26,7 +26,15 @@ public class SP_BallMovement : MonoBehaviour
         float speed = lastVelocity.magnitude;
 
         Vector3 myDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-        Vector2 myVelocity = myDirection * Mathf.Max(speed, 0);
+
+        if (collision.transform.tag == "Player")
+        {
+            float difference = collision.contacts[0].point.y - collision.contacts[0].collider.transform.position.y;
+            float clampedDifference = Mathf.Clamp(difference, -0.5f, 0.5f);
+            myDirection = new Vector3(myDirection.x, clampedDifference, 0);
+        }
+
+        Vector2 myVelocity = myDirection * Mathf.Max(speed, 0);    
 
         if (lastVelocity.x * myDirection.x < 0) //if ball hits the players, because it toggles direction :)
         {
