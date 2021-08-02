@@ -36,8 +36,23 @@ public class PhotonChat : MonoBehaviour , IChatClientListener
         chatClient = new ChatClient(this);
         Debug.Log("Connecting to photon chat service");
 
-        chatClient.AuthValues = new Photon.Chat.AuthenticationValues(nickName);
-        ChatAppSettings chatSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
+        chatClient.AuthValues = new AuthenticationValues(nickName);
+
+        //Deprecated I guess!
+        //ChatAppSettings chatSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
+
+        Photon.Realtime.AppSettings appSettings = PhotonNetwork.PhotonServerSettings.AppSettings; //adding reference
+
+        ChatAppSettings chatSettings = new ChatAppSettings
+        {
+            Server = appSettings.Server,
+            Protocol = appSettings.Protocol,
+            AppIdChat = appSettings.AppIdChat,
+            AppVersion = appSettings.AppVersion,
+            FixedRegion = appSettings.FixedRegion,
+            NetworkLogging = appSettings.NetworkLogging,
+        };
+
         chatClient.ConnectUsingSettings(chatSettings);
     }
 
