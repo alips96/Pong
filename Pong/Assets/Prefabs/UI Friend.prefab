@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &273555665863371187
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34,10 +34,10 @@ RectTransform:
   m_Father: {fileID: 273555666592850564}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 166.92308, y: -25}
+  m_SizeDelta: {x: 35.384617, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &273555665863371184
 CanvasRenderer:
@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   friendNameText: {fileID: 273555666893242335}
   friendStatusImage: {fileID: 1524720568861330790}
+  friendsUIParent: {fileID: 0}
 --- !u!1 &273555666893242321
 GameObject:
   m_ObjectHideFlags: 0

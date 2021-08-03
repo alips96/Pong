@@ -59,12 +59,17 @@ namespace Pong.MP.PlayFab
 
                 if (matchCount > 0)
                 {
-                    float percentage = winCount * 100f / matchCount;
-                    percentageText.text = ((float)Math.Round(percentage * 10f) / 10f).ToString(); //round this into one decimal point.
+                    percentageText.text = CalculateWinPercentage(winCount, matchCount);
                 }
             }
 
             StartCoroutine(DisableStatsPanel());
+        }
+
+        public string CalculateWinPercentage(int winCount, int matchCount)
+        {
+            float percentage = winCount * 100f / matchCount;
+            return ((float)Math.Round(percentage * 10f) / 10f).ToString(); //round this into one decimal point.
         }
 
         private IEnumerator DisableStatsPanel()

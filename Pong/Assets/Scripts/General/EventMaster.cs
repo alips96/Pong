@@ -26,6 +26,7 @@ namespace Pong.General
 
         public delegate void GeneralEventHandler();
         public event GeneralEventHandler EventGetPhotonFriends;
+        public event GeneralEventHandler EventToggleInvitationUI;
 
         public delegate void PhotonFriendsHandler(List<Photon.Realtime.FriendInfo> friendList);
         public event PhotonFriendsHandler EventDisplayFriends;
@@ -97,6 +98,11 @@ namespace Pong.General
         internal void CallEventDiscordJoinMessage(string myName, string opponentName)
         {
             EventDiscordJoinMessage.Invoke(myName, opponentName);
+        }
+
+        internal void CallEventToggleInvitationUI()
+        {
+            EventToggleInvitationUI.Invoke();
         }
     }
 }

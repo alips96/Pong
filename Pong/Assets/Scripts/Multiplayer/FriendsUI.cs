@@ -14,9 +14,22 @@ namespace Pong.MP
 
         private EventMaster playFabMaster;
 
-        private void Start()
+        private void OnEnable()
         {
             playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+
+            playFabMaster.EventToggleInvitationUI += ToggleInvitationButton;
+        }
+
+        private void OnDisable()
+        {
+            playFabMaster.EventToggleInvitationUI -= ToggleInvitationButton;
+        }
+
+        private void ToggleInvitationButton()
+        {
+            GameObject inviteButtonObject = transform.GetChild(2).gameObject; //getchild(2) will give us the invite button transform.
+            inviteButtonObject.SetActive(!inviteButtonObject.activeSelf);
         }
 
         public void SetUI(FriendInfo friend)

@@ -142,6 +142,8 @@ namespace Pong.MP
         {
             Debug.Log("Joined the photon room named " + PhotonNetwork.CurrentRoom.Name);
 
+            playFabMaster.CallEventToggleInvitationUI(); //To enable the players to invite their friends.
+
             leaveRoomButton.SetActive(true);
             singlePlayerButton.SetActive(true);
         }

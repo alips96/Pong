@@ -19,8 +19,6 @@ namespace Pong.MP
             playFabMaster.EventDisplayFriends += DisplayFriends;
         }
 
-
-
         private void OnDisable()
         {
             playFabMaster.EventDisplayFriends -= DisplayFriends;
