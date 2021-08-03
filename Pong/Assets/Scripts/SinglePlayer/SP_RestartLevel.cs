@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Pong.General;
 
 public class SP_RestartLevel : MonoBehaviour
 {

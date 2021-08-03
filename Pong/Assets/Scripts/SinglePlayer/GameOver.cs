@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using Pong.General;
+using Pong.MP.PlayFab;
 
 public class GameOver : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverPanel;
     
     private PlayerMovement playerMovement;
-    private PlayFabMaster playFabMaster;
+    private EventMaster playFabMaster;
 
     private void OnEnable()
     {
@@ -36,7 +38,7 @@ public class GameOver : MonoBehaviour
 
     private void SetInitialReferences()
     {
-        playFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
+        playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
     }
 }

@@ -1,49 +1,54 @@
 ﻿using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using Pong.General;
 
-public class DiscordLogin : MonoBehaviour
+namespace Pong.MP.Discord
 {
-    private PlayFabMaster playFabMaster;
-
-    void OnEnable()
+    public class DiscordLogin : MonoBehaviour
     {
-        SetInitialReferences();
+        private EventMaster playFabMaster;
 
-        playFabMaster.EventUserLoggedIn += DisplayLoginMessage;
-    }
-
-    private void OnDisable()
-    {
-        playFabMaster.EventUserLoggedIn -= DisplayLoginMessage;
-    }
-
-    private void DisplayLoginMessage(string name)
-    {
-        var request = new ExecuteCloudScriptRequest
+        void OnEnable()
         {
-            FunctionName = "userLoggedIn",
-            FunctionParameter = new
-            {
-                playerName = name
-            }
-        };
+            SetInitialReferences();
 
-        PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
-    }
+            playFabMaster.EventUserLoggedIn += DisplayLoginMessage;
+        }
 
-    private void OnMessageDisplayed(ExecuteCloudScriptResult result)
-    {
-        Debug.Log("Login message showed on discord!");
-    }
+        private void OnDisable()
+        {
+            playFabMaster.EventUserLoggedIn -= DisplayLoginMessage;
+        }
 
-    private void OnError(PlayFabError error)
-    {
-        Debug.LogError(error.GenerateErrorReport());
-    }
+        private void DisplayLoginMessage(string name)
+        {
+            //Remove this code to re enable bot notifications.
+            //var request = new ExecuteCloudScriptRequest
+            //{
+            //    FunctionName = "userLoggedIn",
+            //    FunctionParameter = new
+            //    {
+            //        playerName = name
+            //    }
+            //};
 
-    private void SetInitialReferences()
-    {
-        playFabMaster = transform.parent.GetComponent<PlayFabMaster>();
+            //PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
+        }
+
+        private void OnMessageDisplayed(ExecuteCloudScriptResult result)
+        {
+            Debug.Log("Login message showed on discord!");
+        }
+
+        private void OnError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+
+        private void SetInitialReferences()
+        {
+            playFabMaster = transform.parent.GetComponent<EventMaster>();
+        }
     }
 }

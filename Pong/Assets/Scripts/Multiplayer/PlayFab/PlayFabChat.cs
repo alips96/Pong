@@ -3,57 +3,60 @@ using UnityEngine.UI;
 using PlayFab;
 using PlayFab.ClientModels;
 
-public class PlayFabChat : MonoBehaviour
+namespace Pong.MP.PlayFab
 {
-    private InputField myInputField;
-    private Transform parent;
-
-    [SerializeField] private Text displayNameText;
-
-    private void Start()
+    public class PlayFabChat : MonoBehaviour
     {
-        SetInitialReferences();
-    }
+        private InputField myInputField;
+        private Transform parent;
 
-    public void OnUserSentNotif() //Called by chat input field.
-    {
-        if (!string.IsNullOrEmpty(myInputField.text))
+        [SerializeField] private Text displayNameText;
+
+        private void Start()
         {
-            var request = new ExecuteCloudScriptRequest
-            {
-                FunctionName = "sendNotification",
-                FunctionParameter = new
-                {
-                    author = displayNameText.text,
-                    body = myInputField.text
-                }
-            };
-
-            PlayFabClientAPI.ExecuteCloudScript(request, OnMessageSent, OnError);
+            SetInitialReferences();
         }
 
-        ManageUI();
-    }
+        public void OnUserSentNotif() //Called by chat input field.
+        {
+            if (!string.IsNullOrEmpty(myInputField.text))
+            {
+                var request = new ExecuteCloudScriptRequest
+                {
+                    FunctionName = "sendNotification",
+                    FunctionParameter = new
+                    {
+                        author = displayNameText.text,
+                        body = myInputField.text
+                    }
+                };
 
-    private void OnMessageSent(ExecuteCloudScriptResult result)
-    {
-        Debug.Log("Successfully sent message to the discord server!");
-    }
+                PlayFabClientAPI.ExecuteCloudScript(request, OnMessageSent, OnError);
+            }
 
-    private void OnError(PlayFabError error)
-    {
-        Debug.LogError(error.GenerateErrorReport());
-    }
+            ManageUI();
+        }
 
-    private void ManageUI()
-    {
-        myInputField.text = string.Empty;
-        parent.gameObject.SetActive(false);
-    }
+        private void OnMessageSent(ExecuteCloudScriptResult result)
+        {
+            Debug.Log("Successfully sent message to the discord server!");
+        }
 
-    private void SetInitialReferences()
-    {
-        myInputField = transform.GetComponent<InputField>();
-        parent = transform.parent;
+        private void OnError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+
+        private void ManageUI()
+        {
+            myInputField.text = string.Empty;
+            parent.gameObject.SetActive(false);
+        }
+
+        private void SetInitialReferences()
+        {
+            myInputField = transform.GetComponent<InputField>();
+            parent = transform.parent;
+        }
     }
 }

@@ -2,44 +2,47 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ChangeInput : MonoBehaviour
+namespace Pong.Menu
 {
-    EventSystem system;
-    [SerializeField] private Selectable firstInput;
-    [SerializeField] private Button submitButton;
-
-    // Start is called before the first frame update
-    void Start()
+    public class ChangeInput : MonoBehaviour
     {
-        system = EventSystem.current;
-        firstInput.Select();
-    }
+        EventSystem system;
+        [SerializeField] private Selectable firstInput;
+        [SerializeField] private Button submitButton;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift))
+        // Start is called before the first frame update
+        void Start()
         {
-            Selectable previous = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
-
-            if(previous != null)
-            {
-                previous.Select();
-            }
+            system = EventSystem.current;
+            firstInput.Select();
         }
-        else if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
 
-            if (next != null)
-            {
-                next.Select();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Return))
+        // Update is called once per frame
+        void Update()
         {
-            submitButton.onClick.Invoke();
-            Debug.Log("Button Passed!");
+            if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift))
+            {
+                Selectable previous = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+
+                if (previous != null)
+                {
+                    previous.Select();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+
+                if (next != null)
+                {
+                    next.Select();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                submitButton.onClick.Invoke();
+                Debug.Log("Button Passed!");
+            }
         }
     }
 }

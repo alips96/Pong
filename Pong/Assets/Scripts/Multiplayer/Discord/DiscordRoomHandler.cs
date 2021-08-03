@@ -2,49 +2,53 @@
 using PlayFab;
 using PlayFab.ClientModels;
 
-public class DiscordRoomHandler : MonoBehaviour
+namespace Pong.MP.Discord
 {
-    private PlayFabMaster playFabMaster;
-
-    private void OnEnable()
+    public class DiscordRoomHandler : MonoBehaviour
     {
-        SetInitialReferenes();
+        private EventMaster playFabMaster;
 
-        playFabMaster.EventDiscordJoinMessage += DisplayRoomNotification;
-    }
-
-    private void OnDisable()
-    {
-        playFabMaster.EventDiscordJoinMessage -= DisplayRoomNotification;
-    }
-
-    private void DisplayRoomNotification(string host, string guest)
-    {
-        var request = new ExecuteCloudScriptRequest
+        private void OnEnable()
         {
-            FunctionName = "matchKickedOff",
-            FunctionParameter = new
-            {
-                hostName = host,
-                guestName = guest
-            }
-        };
+            SetInitialReferenes();
 
-        PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
-    }
+            playFabMaster.EventDiscordJoinMessage += DisplayRoomNotification;
+        }
 
-    private void OnMessageDisplayed(ExecuteCloudScriptResult result)
-    {
-        Debug.Log("Match kickoff message showed on discord!");
-    }
+        private void OnDisable()
+        {
+            playFabMaster.EventDiscordJoinMessage -= DisplayRoomNotification;
+        }
 
-    private void OnError(PlayFabError error)
-    {
-        Debug.LogError(error.GenerateErrorReport());
-    }
+        private void DisplayRoomNotification(string host, string guest)
+        {
+            //Remove this code to re enable bot notifications.
+            //var request = new ExecuteCloudScriptRequest
+            //{
+            //    FunctionName = "matchKickedOff",
+            //    FunctionParameter = new
+            //    {
+            //        hostName = host,
+            //        guestName = guest
+            //    }
+            //};
 
-    private void SetInitialReferenes()
-    {
-        playFabMaster = GetComponentInParent<PlayFabMaster>();
+            //PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
+        }
+
+        private void OnMessageDisplayed(ExecuteCloudScriptResult result)
+        {
+            Debug.Log("Match kickoff message showed on discord!");
+        }
+
+        private void OnError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+
+        private void SetInitialReferenes()
+        {
+            playFabMaster = GetComponentInParent<EventMaster>();
+        }
     }
 }

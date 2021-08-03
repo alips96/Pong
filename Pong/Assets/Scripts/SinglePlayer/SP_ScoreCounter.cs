@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Pong.General;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +6,11 @@ public class SP_ScoreCounter : MonoBehaviour
 {
     [SerializeField] private Text scoreText;
     private int score;
-    private PlayFabMaster playfabMasterScript;
+    private EventMaster playfabMasterScript;
 
     private void Start()
     {
-        playfabMasterScript = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
+        playfabMasterScript = GameObject.Find("Network Manager").GetComponent<EventMaster>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

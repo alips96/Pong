@@ -1,37 +1,41 @@
-﻿using UnityEngine;
+﻿using Pong.General;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class InviteUI : MonoBehaviour
+namespace Pong.MP
 {
-    private string friendName;
-    private string roomName;
-    [SerializeField] private Text friendNameText;
-
-    private PlayFabMaster playFabMaster;
-
-    private void Start()
+    public class InviteUI : MonoBehaviour
     {
-        playFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
-    }
+        private string friendName;
+        private string roomName;
+        [SerializeField] private Text friendNameText;
 
-    public void Initialize(string friend, string room)
-    {
-        friendName = friend;
-        roomName = room;
+        private EventMaster playFabMaster;
 
-        friendNameText.text = friendName;
-    }
+        private void Start()
+        {
+            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+        }
 
-    public void AcceptInvite() //Called by invite button
-    {
-        Debug.Log("Accept Invite Action");
-        playFabMaster.CallEventInviteAccepted(this);
-        playFabMaster.CallEventRoomInvitationAccepted(roomName);
-    }
+        public void Initialize(string friend, string room)
+        {
+            friendName = friend;
+            roomName = room;
 
-    public void DeclineInvite() //Called by remove button
-    {
-        Debug.Log("Decline Invite Action");
-        playFabMaster.CallEventInviteDeclined(this);
+            friendNameText.text = friendName;
+        }
+
+        public void AcceptInvite() //Called by invite button
+        {
+            Debug.Log("Accept Invite Action");
+            playFabMaster.CallEventInviteAccepted(this);
+            playFabMaster.CallEventRoomInvitationAccepted(roomName);
+        }
+
+        public void DeclineInvite() //Called by remove button
+        {
+            Debug.Log("Decline Invite Action");
+            playFabMaster.CallEventInviteDeclined(this);
+        }
     }
 }

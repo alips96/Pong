@@ -1,34 +1,37 @@
-﻿using System;
+﻿using Pong.General;
 using UnityEngine;
 
-public class AddFriendUI : MonoBehaviour
+namespace Pong.MP
 {
-    [SerializeField] private string displayName;
-    private PlayFabMaster PlayFabMaster;
-
-    private void Start()
+    public class AddFriendUI : MonoBehaviour
     {
-        SetInitialReferences();
-    }
+        [SerializeField] private string displayName;
+        private EventMaster PlayFabMaster;
 
-    private void SetInitialReferences()
-    {
-        PlayFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
-    }
-
-    public void SetAddFriendName(string someName) //Called by add friend input field.
-    {
-        displayName = someName;
-    }
-
-    public void AddFriend() //Called by add friend button
-    {
-        if (string.IsNullOrEmpty(displayName))
+        private void Start()
         {
-            Debug.Log("Display name empty!!!");
-            return;
+            SetInitialReferences();
         }
 
-        PlayFabMaster.CallEventAddFriend(displayName);
+        private void SetInitialReferences()
+        {
+            PlayFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+        }
+
+        public void SetAddFriendName(string someName) //Called by add friend input field.
+        {
+            displayName = someName;
+        }
+
+        public void AddFriend() //Called by add friend button
+        {
+            if (string.IsNullOrEmpty(displayName))
+            {
+                Debug.Log("Display name empty!!!");
+                return;
+            }
+
+            PlayFabMaster.CallEventAddFriend(displayName);
+        }
     }
 }

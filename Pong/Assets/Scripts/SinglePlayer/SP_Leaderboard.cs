@@ -2,10 +2,11 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
+using Pong.General;
 
 public class SP_Leaderboard : MonoBehaviour
 {
-    private PlayFabMaster playFabMaster;
+    private EventMaster playFabMaster;
     [SerializeField] private int maxResultPlayerCount = 10;
 
     [SerializeField] private GameObject rowPrefab;
@@ -27,7 +28,7 @@ public class SP_Leaderboard : MonoBehaviour
 
     private void SetInitialReferences()
     {
-        playFabMaster = GetComponent<PlayFabMaster>();
+        playFabMaster = GetComponent<EventMaster>();
     }
 
     private void SendToLeaderboard(int score)

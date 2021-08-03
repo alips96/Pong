@@ -1,33 +1,37 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviourPun
-{
-    private Rigidbody2D myrb;
-    private Vector3 mousePos;
-    private float xPos;
 
-    private void Start()
+namespace Pong.General
+{
+    public class PlayerMovement : MonoBehaviourPun
     {
-        if(GetComponent<PhotonView>() != null)
+        private Rigidbody2D myrb;
+        private Vector3 mousePos;
+        private float xPos;
+
+        private void Start()
         {
-            if (!photonView.IsMine)
+            if (GetComponent<PhotonView>() != null)
             {
-                enabled = false;
+                if (!photonView.IsMine)
+                {
+                    enabled = false;
+                }
             }
+
+            myrb = GetComponent<Rigidbody2D>();
+            xPos = transform.position.x;
         }
 
-        myrb = GetComponent<Rigidbody2D>();
-        xPos = transform.position.x;
-    }
+        void Update()
+        {
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
 
-    void Update()
-    {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    private void FixedUpdate()
-    {
-        myrb.MovePosition(new Vector2(xPos, mousePos.y));
+        private void FixedUpdate()
+        {
+            myrb.MovePosition(new Vector2(xPos, mousePos.y));
+        }
     }
 }

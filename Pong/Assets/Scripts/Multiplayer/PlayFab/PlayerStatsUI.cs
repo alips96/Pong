@@ -6,76 +6,79 @@ using System;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayerStatsUI : MonoBehaviour
+namespace Pong.MP.PlayFab
 {
-    [SerializeField] private float alphaComponent = 0.3f;
-
-    [SerializeField] private Text totalGamesText;
-    [SerializeField] private Text wonText;
-    [SerializeField] private Text lossText;
-    [SerializeField] private Text percentageText;
-    [SerializeField] private Transform statsPanel;
-
-    private bool shouldTakeAction = true;
-    [SerializeField] private int displayInterval = 3;
-
-    public void GetStatsButtonClicked() //Called by get stats button.
+    public class PlayerStatsUI : MonoBehaviour
     {
-        if (!shouldTakeAction)
-            return;
+        [SerializeField] private float alphaComponent = 0.3f;
 
-        shouldTakeAction = false;
-        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnPlayerDataReceived, OnError);
-    }
+        [SerializeField] private Text totalGamesText;
+        [SerializeField] private Text wonText;
+        [SerializeField] private Text lossText;
+        [SerializeField] private Text percentageText;
+        [SerializeField] private Transform statsPanel;
 
-    private void OnPlayerDataReceived(GetUserDataResult result)
-    {
-        transform.parent.GetComponent<Image>().color = new Color(0, 0, 0, alphaComponent);
-        statsPanel.gameObject.SetActive(true);
+        private bool shouldTakeAction = true;
+        [SerializeField] private int displayInterval = 3;
 
-        if (result.Data != null)
+        public void GetStatsButtonClicked() //Called by get stats button.
         {
-            Dictionary<string, UserDataRecord> dataDic = result.Data;
-            int winCount = 0, matchCount = 0;
+            if (!shouldTakeAction)
+                return;
 
-            if (dataDic.ContainsKey("Match"))
-            {
-                totalGamesText.text = dataDic["Match"].Value;
-                matchCount = Convert.ToInt32(totalGamesText.text);
-            }
-
-            if (dataDic.ContainsKey("Win"))
-            {
-                wonText.text = dataDic["Win"].Value;
-                winCount = Convert.ToInt32(wonText.text);
-            }
-
-            if (dataDic.ContainsKey("Lose"))
-            {
-                lossText.text = dataDic["Lose"].Value;
-            }
-
-            if (matchCount > 0)
-            {
-                float percentage = winCount * 100f / matchCount;
-                percentageText.text = ((float)Math.Round(percentage * 10f) / 10f).ToString(); //round this into one decimal point.
-            }
+            shouldTakeAction = false;
+            PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnPlayerDataReceived, OnError);
         }
 
-        StartCoroutine(DisableStatsPanel());
-    }
+        private void OnPlayerDataReceived(GetUserDataResult result)
+        {
+            transform.parent.GetComponent<Image>().color = new Color(0, 0, 0, alphaComponent);
+            statsPanel.gameObject.SetActive(true);
 
-    private IEnumerator DisableStatsPanel()
-    {
-        yield return new WaitForSeconds(displayInterval); //wait for a few seconds.
+            if (result.Data != null)
+            {
+                Dictionary<string, UserDataRecord> dataDic = result.Data;
+                int winCount = 0, matchCount = 0;
 
-        transform.parent.GetComponent<Image>().color = Color.clear;
-        statsPanel.gameObject.SetActive(false);
-        shouldTakeAction = true;
-    }
+                if (dataDic.ContainsKey("Match"))
+                {
+                    totalGamesText.text = dataDic["Match"].Value;
+                    matchCount = Convert.ToInt32(totalGamesText.text);
+                }
 
-    private void OnError(PlayFabError error)
-    {
-        Debug.LogError(error.GenerateErrorReport());
+                if (dataDic.ContainsKey("Win"))
+                {
+                    wonText.text = dataDic["Win"].Value;
+                    winCount = Convert.ToInt32(wonText.text);
+                }
+
+                if (dataDic.ContainsKey("Lose"))
+                {
+                    lossText.text = dataDic["Lose"].Value;
+                }
+
+                if (matchCount > 0)
+                {
+                    float percentage = winCount * 100f / matchCount;
+                    percentageText.text = ((float)Math.Round(percentage * 10f) / 10f).ToString(); //round this into one decimal point.
+                }
+            }
+
+            StartCoroutine(DisableStatsPanel());
+        }
+
+        private IEnumerator DisableStatsPanel()
+        {
+            yield return new WaitForSeconds(displayInterval); //wait for a few seconds.
+
+            transform.parent.GetComponent<Image>().color = Color.clear;
+            statsPanel.gameObject.SetActive(false);
+            shouldTakeAction = true;
+        }
+
+        private void OnError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
     }
 }

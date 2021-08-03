@@ -1,32 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using ExitGames.Client.Photon;
-using System;
 
-public class MP_GameOver : MonoBehaviour
+namespace Pong.MP
 {
-    [SerializeField] private GameObject gameOverMenu;
-    [SerializeField] private Transform ballTransform;
-    
-    private void OnEnable()
+    public class MP_GameOver : MonoBehaviour
     {
-        PhotonNetwork.NetworkingClient.EventReceived += ApplyGameOver;
-    }
+        [SerializeField] private GameObject gameOverMenu;
+        [SerializeField] private Transform ballTransform;
 
-    private void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= ApplyGameOver;
-    }
-
-    private void ApplyGameOver(EventData obj)
-    {
-        if(obj.Code == 2)
+        private void OnEnable()
         {
-            Destroy(ballTransform.gameObject);
-            gameOverMenu.SetActive(true);
+            PhotonNetwork.NetworkingClient.EventReceived += ApplyGameOver;
+        }
+
+        private void OnDisable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= ApplyGameOver;
+        }
+
+        private void ApplyGameOver(EventData obj)
+        {
+            if (obj.Code == 2)
+            {
+                Destroy(ballTransform.gameObject);
+                gameOverMenu.SetActive(true);
+            }
         }
     }
 }

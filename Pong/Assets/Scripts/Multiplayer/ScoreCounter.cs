@@ -1,57 +1,59 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Pun;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Realtime;
 
-public class ScoreCounter : MonoBehaviour
+namespace Pong.MP
 {
-    [SerializeField] private Text opponentScoreText;
-    [SerializeField] private Text playerScoreText;
-    [SerializeField] private byte winScore = 10;
-
-    private byte playerScore, opponentScore = 0;
-
-    private void OnEnable()
+    public class ScoreCounter : MonoBehaviour
     {
-        PhotonNetwork.NetworkingClient.EventReceived += IncrementScore;
-    }
+        [SerializeField] private Text opponentScoreText;
+        [SerializeField] private Text playerScoreText;
+        [SerializeField] private byte winScore = 10;
 
-    private void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= IncrementScore;
-    }
+        private byte playerScore, opponentScore = 0;
 
-    private void IncrementScore(EventData obj)
-    {
-        if(obj.Code == 1) //if the ball hits the bonus bars
+        private void OnEnable()
         {
-            if (obj.CustomData.ToString().Equals("OppBar")) //Player Scored!
-            {
-                playerScoreText.text = (++playerScore).ToString();
+            PhotonNetwork.NetworkingClient.EventReceived += IncrementScore;
+        }
 
-                if(playerScore == winScore) //master player won
+        private void OnDisable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= IncrementScore;
+        }
+
+        private void IncrementScore(EventData obj)
+        {
+            if (obj.Code == 1) //if the ball hits the bonus bars
+            {
+                if (obj.CustomData.ToString().Equals("OppBar")) //Player Scored!
                 {
-                    if (PhotonNetwork.IsMasterClient)
+                    playerScoreText.text = (++playerScore).ToString();
+
+                    if (playerScore == winScore) //master player won
                     {
-                        PhotonNetwork.RaiseEvent(2, true,
-                            new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                            new SendOptions { Reliability = true });
+                        if (PhotonNetwork.IsMasterClient)
+                        {
+                            PhotonNetwork.RaiseEvent(2, true,
+                                new RaiseEventOptions { Receivers = ReceiverGroup.All },
+                                new SendOptions { Reliability = true });
+                        }
                     }
                 }
-            }
-            else
-            {
-                opponentScoreText.text = (++opponentScore).ToString();
-
-                if (opponentScore == winScore) //second player won
+                else
                 {
-                    if (PhotonNetwork.IsMasterClient)
+                    opponentScoreText.text = (++opponentScore).ToString();
+
+                    if (opponentScore == winScore) //second player won
                     {
-                        PhotonNetwork.RaiseEvent(2, false,
-                            new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                            new SendOptions { Reliability = true });
+                        if (PhotonNetwork.IsMasterClient)
+                        {
+                            PhotonNetwork.RaiseEvent(2, false,
+                                new RaiseEventOptions { Receivers = ReceiverGroup.All },
+                                new SendOptions { Reliability = true });
+                        }
                     }
                 }
             }

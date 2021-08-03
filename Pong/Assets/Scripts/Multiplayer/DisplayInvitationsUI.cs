@@ -1,69 +1,71 @@
-﻿using System;
-using System.Collections;
+﻿using Pong.General;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisplayInvitationsUI : MonoBehaviour
+namespace Pong.MP
 {
-    private PlayFabMaster playFabMaster;
-    private List<InviteUI> invitationsList;
-
-    [SerializeField] private Transform invitationsContainer;
-    [SerializeField] private InviteUI uiInvitePrefab;
-    [SerializeField] private RectTransform contentRect;
-    [SerializeField] private Vector2 originalSize;
-    [SerializeField] private Vector2 increasedSize;
-
-    private void OnEnable()
+    public class DisplayInvitationsUI : MonoBehaviour
     {
-        SetInitialReferences();
+        private EventMaster playFabMaster;
+        private List<InviteUI> invitationsList;
 
-        playFabMaster.EventInvitedToTheRoom += HandleRoomInvitation;
-        playFabMaster.EventInviteAccepted += InviteAccepted;
-        playFabMaster.EventInviteDeclined += InviteDeclined;
-    }
+        [SerializeField] private Transform invitationsContainer;
+        [SerializeField] private InviteUI uiInvitePrefab;
+        [SerializeField] private RectTransform contentRect;
+        [SerializeField] private Vector2 originalSize;
+        [SerializeField] private Vector2 increasedSize;
 
-    private void OnDisable()
-    {
-        playFabMaster.EventInvitedToTheRoom -= HandleRoomInvitation;
-        playFabMaster.EventInviteAccepted -= InviteAccepted;
-        playFabMaster.EventInviteDeclined -= InviteDeclined;
-    }
-
-    private void InviteAccepted(InviteUI invite)
-    {
-        if (invitationsList.Contains(invite))
+        private void OnEnable()
         {
-            invitationsList.Remove(invite);
-            Destroy(invite.gameObject);
-        }
-    }
+            SetInitialReferences();
 
-    private void InviteDeclined(InviteUI invite)
-    {
-        if (invitationsList.Contains(invite))
+            playFabMaster.EventInvitedToTheRoom += HandleRoomInvitation;
+            playFabMaster.EventInviteAccepted += InviteAccepted;
+            playFabMaster.EventInviteDeclined += InviteDeclined;
+        }
+
+        private void OnDisable()
         {
-            invitationsList.Remove(invite);
-            Destroy(invite.gameObject);
+            playFabMaster.EventInvitedToTheRoom -= HandleRoomInvitation;
+            playFabMaster.EventInviteAccepted -= InviteAccepted;
+            playFabMaster.EventInviteDeclined -= InviteDeclined;
         }
-    }
 
-    private void HandleRoomInvitation(string friend, string roomName)
-    {
-        Debug.Log("friend: " + friend + " invited to the room: " + roomName);
+        private void InviteAccepted(InviteUI invite)
+        {
+            if (invitationsList.Contains(invite))
+            {
+                invitationsList.Remove(invite);
+                Destroy(invite.gameObject);
+            }
+        }
 
-        InviteUI uiInvite = Instantiate(uiInvitePrefab, invitationsContainer);
-        uiInvite.Initialize(friend, roomName);
-        contentRect.sizeDelta += increasedSize;
-        invitationsList.Add(uiInvite);
-    }
+        private void InviteDeclined(InviteUI invite)
+        {
+            if (invitationsList.Contains(invite))
+            {
+                invitationsList.Remove(invite);
+                Destroy(invite.gameObject);
+            }
+        }
 
-    private void SetInitialReferences()
-    {
-        playFabMaster = GameObject.Find("Network Manager").GetComponent<PlayFabMaster>();
-        contentRect = invitationsContainer.GetComponent<RectTransform>();
-        originalSize = contentRect.sizeDelta;
-        increasedSize = new Vector2(0, uiInvitePrefab.GetComponent<RectTransform>().sizeDelta.y);
-        invitationsList = new List<InviteUI>();
+        private void HandleRoomInvitation(string friend, string roomName)
+        {
+            Debug.Log("friend: " + friend + " invited to the room: " + roomName);
+
+            InviteUI uiInvite = Instantiate(uiInvitePrefab, invitationsContainer);
+            uiInvite.Initialize(friend, roomName);
+            contentRect.sizeDelta += increasedSize;
+            invitationsList.Add(uiInvite);
+        }
+
+        private void SetInitialReferences()
+        {
+            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+            contentRect = invitationsContainer.GetComponent<RectTransform>();
+            originalSize = contentRect.sizeDelta;
+            increasedSize = new Vector2(0, uiInvitePrefab.GetComponent<RectTransform>().sizeDelta.y);
+            invitationsList = new List<InviteUI>();
+        }
     }
 }

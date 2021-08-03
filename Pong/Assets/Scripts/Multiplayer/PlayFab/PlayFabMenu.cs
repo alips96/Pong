@@ -2,70 +2,74 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
+using Pong.General;
 
-public class PlayFabMenu : MonoBehaviour
+namespace Pong.MP.PlayFab
 {
-    private PlayFabMaster playFabMasterScript;
-
-    [SerializeField] private GameObject loginMenu;
-    [SerializeField] private GameObject mainMenu;
-
-    [SerializeField] private InputField usernameInput;
-
-    [SerializeField] private Text username;
-
-    private void OnEnable()
+    public class PlayFabMenu : MonoBehaviour
     {
-        SetInitialReferences();
+        private EventMaster playFabMasterScript;
 
-        playFabMasterScript.EventUserLoggedIn += SetupMainMenu;
-    }
+        [SerializeField] private GameObject loginMenu;
+        [SerializeField] private GameObject mainMenu;
 
-    private void OnDisable()
-    {
-        playFabMasterScript.EventUserLoggedIn -= SetupMainMenu;
-    }
+        [SerializeField] private InputField usernameInput;
 
-    private void SetInitialReferences()
-    {
-        playFabMasterScript = GetComponent<PlayFabMaster>();
-    }
+        [SerializeField] private Text username;
 
-    private void SetupMainMenu(string displayName)
-    {
-        ToggleMenus();
-        username.text = displayName;
-    }
-
-    private void ToggleMenus()
-    {
-        loginMenu.SetActive(false);
-        mainMenu.SetActive(true);
-    }
-
-    public void SetUsername() //Called by Username input field
-    {
-        if (string.IsNullOrWhiteSpace(usernameInput.text))
-            return;
-
-        var request = new UpdateUserTitleDisplayNameRequest
+        private void OnEnable()
         {
-            DisplayName = usernameInput.text
-        };
+            SetInitialReferences();
 
-        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnUsernameCaptured, OnError);
-    }
+            playFabMasterScript.EventUserLoggedIn += SetupMainMenu;
+        }
 
-    private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
-    {
-        string displayName = result.DisplayName;
+        private void OnDisable()
+        {
+            playFabMasterScript.EventUserLoggedIn -= SetupMainMenu;
+        }
 
-        Photon.Pun.PhotonNetwork.NickName = displayName;
-        username.text = displayName;
-    }
+        private void SetInitialReferences()
+        {
+            playFabMasterScript = GetComponent<EventMaster>();
+        }
 
-    private void OnError(PlayFabError error)
-    {
-        Debug.Log(error.GenerateErrorReport());
+        private void SetupMainMenu(string displayName)
+        {
+            ToggleMenus();
+            username.text = displayName;
+        }
+
+        private void ToggleMenus()
+        {
+            loginMenu.SetActive(false);
+            mainMenu.SetActive(true);
+        }
+
+        public void SetUsername() //Called by Username input field
+        {
+            if (string.IsNullOrWhiteSpace(usernameInput.text))
+                return;
+
+            var request = new UpdateUserTitleDisplayNameRequest
+            {
+                DisplayName = usernameInput.text
+            };
+
+            PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnUsernameCaptured, OnError);
+        }
+
+        private void OnUsernameCaptured(UpdateUserTitleDisplayNameResult result)
+        {
+            string displayName = result.DisplayName;
+
+            Photon.Pun.PhotonNetwork.NickName = displayName;
+            username.text = displayName;
+        }
+
+        private void OnError(PlayFabError error)
+        {
+            Debug.Log(error.GenerateErrorReport());
+        }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneHandler : MonoBehaviour
+namespace Pong.Menu
 {
-    public void LoadSiglePlayerScene()
+    public class SceneHandler : MonoBehaviour
     {
-        SceneManager.LoadScene(1); //load single player scene.
+        public void LoadSiglePlayerScene()
+        {
+            SceneManager.LoadScene(1); //load single player scene.
+        }
     }
 }

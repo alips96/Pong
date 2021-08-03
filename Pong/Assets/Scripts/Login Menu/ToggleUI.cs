@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 
-public class ToggleUI : MonoBehaviour
+namespace Pong.Menu
 {
-    [SerializeField] private GameObject toggleObject;
-    [SerializeField] private GameObject[] otherContainers;
-
-    public void ToggleGameObject() //Called by buttons
+    public class ToggleUI : MonoBehaviour
     {
-        toggleObject.SetActive(!toggleObject.activeSelf);
+        [SerializeField] private GameObject toggleObject;
+        [SerializeField] private GameObject[] otherContainers;
 
-        foreach (GameObject item in otherContainers)
+        public void ToggleGameObject() //Called by buttons
         {
-            item.SetActive(false);
+            toggleObject.SetActive(!toggleObject.activeSelf);
+
+            foreach (GameObject item in otherContainers)
+            {
+                item.SetActive(false);
+            }
         }
     }
 }

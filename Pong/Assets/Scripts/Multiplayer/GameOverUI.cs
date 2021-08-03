@@ -6,98 +6,101 @@ using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class GameOverUI : MonoBehaviour
+namespace Pong.MP
 {
-    [SerializeField] private Text statusText;
-    [SerializeField] private Text winnerText;
-
-    private void OnEnable()
+    public class GameOverUI : MonoBehaviour
     {
-        PhotonNetwork.NetworkingClient.EventReceived += SetWinnerText;
-        PhotonNetwork.NetworkingClient.EventReceived += LoadScene;
-    }
+        [SerializeField] private Text statusText;
+        [SerializeField] private Text winnerText;
 
-    private void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= SetWinnerText;
-        PhotonNetwork.NetworkingClient.EventReceived -= LoadScene;
-    }
-
-    private void SetWinnerText(EventData obj)
-    {
-        if (obj.Code != 2)
-            return;
-
-        if ((bool)obj.CustomData) //master player Won
+        private void OnEnable()
         {
-            if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.NetworkingClient.EventReceived += SetWinnerText;
+            PhotonNetwork.NetworkingClient.EventReceived += LoadScene;
+        }
+
+        private void OnDisable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= SetWinnerText;
+            PhotonNetwork.NetworkingClient.EventReceived -= LoadScene;
+        }
+
+        private void SetWinnerText(EventData obj)
+        {
+            if (obj.Code != 2)
+                return;
+
+            if ((bool)obj.CustomData) //master player Won
             {
-                winnerText.text = "You won!";
-                winnerText.color = Color.green;
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    winnerText.text = "You won!";
+                    winnerText.color = Color.green;
+                }
+                else
+                {
+                    winnerText.text = "You lost :(";
+                    winnerText.color = Color.red;
+                }
             }
             else
             {
-                winnerText.text = "You lost :(";
-                winnerText.color = Color.red;
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    winnerText.text = "You lost :(";
+                    winnerText.color = Color.red;
+                }
+                else
+                {
+                    winnerText.text = "You won!";
+                    winnerText.color = Color.green;
+                }
             }
         }
-        else
+
+        public void ReplayButtonClicked() //Called by replay button
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.CurrentRoom.PlayerCount.Equals(2))
             {
-                winnerText.text = "You lost :(";
-                winnerText.color = Color.red;
+                PhotonNetwork.RaiseEvent(4, 2, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
             }
             else
             {
-                winnerText.text = "You won!";
-                winnerText.color = Color.green;
+                statusText.text = "The other player has left the room!";
             }
         }
-    }
 
-    public void ReplayButtonClicked() //Called by replay button
-    {
-        if (PhotonNetwork.CurrentRoom.PlayerCount.Equals(2))
+        public void HomeButtonClicked() //Called by home button.
         {
-            PhotonNetwork.RaiseEvent(4, 2, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
+            PlayerPrefs.SetString("LOGGEDIN", PhotonNetwork.LocalPlayer.NickName);
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.AutomaticallySyncScene = false; //to make clients independent for a while.
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
+                Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount + "and i am master client" + PhotonNetwork.IsMasterClient);
+                StartCoroutine(GotoLoginScene());
+            }
+
         }
-        else
-        {
-            statusText.text = "The other player has left the room!";
-        }
-    }
 
-    public void HomeButtonClicked() //Called by home button.
-    {
-        PlayerPrefs.SetString("LOGGEDIN", PhotonNetwork.LocalPlayer.NickName);
-
-        if (PhotonNetwork.IsMasterClient)
+        private IEnumerator GotoLoginScene()
         {
+            yield return new WaitUntil(() => PhotonNetwork.IsMasterClient);
             PhotonNetwork.AutomaticallySyncScene = false; //to make clients independent for a while.
             SceneManager.LoadScene(0);
         }
-        else
+
+        private void LoadScene(EventData obj)
         {
-            PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
-            Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount + "and i am master client" + PhotonNetwork.IsMasterClient);
-            StartCoroutine(GotoLoginScene());
-        }
-
-    }
-
-    private IEnumerator GotoLoginScene()
-    {
-        yield return new WaitUntil(() => PhotonNetwork.IsMasterClient);
-        PhotonNetwork.AutomaticallySyncScene = false; //to make clients independent for a while.
-        SceneManager.LoadScene(0);
-    }
-
-    private void LoadScene(EventData obj)
-    {
-        if (obj.Code.Equals(4))
-        {
-            PhotonNetwork.LoadLevel((int)obj.CustomData); //Load scene.
+            if (obj.Code.Equals(4))
+            {
+                PhotonNetwork.LoadLevel((int)obj.CustomData); //Load scene.
+            }
         }
     }
 }
