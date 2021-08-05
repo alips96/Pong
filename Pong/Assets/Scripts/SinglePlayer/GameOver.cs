@@ -1,43 +1,46 @@
 ﻿using UnityEngine;
 using Pong.General;
 
-public class GameOver : MonoBehaviour
+namespace Pong.SP
 {
-    [SerializeField] private GameObject gameOverPanel;
-    
-    private PlayerMovement playerMovement;
-    private EventMaster playFabMaster;
-
-    private void OnEnable()
+    public class GameOver : MonoBehaviour
     {
-        SetInitialReferences();
+        [SerializeField] private GameObject gameOverPanel;
 
-        playFabMaster.EventGameOver += PerformGameOverAction;
-    }
+        private PlayerMovement playerMovement;
+        private EventMaster playFabMaster;
 
-    private void OnDisable()
-    {
-        playFabMaster.EventGameOver -= PerformGameOverAction;
-    }
+        private void OnEnable()
+        {
+            SetInitialReferences();
 
-    private void PerformGameOverAction(int score)
-    {
-        gameOverPanel.SetActive(true);
+            playFabMaster.EventGameOver += PerformGameOverAction;
+        }
 
-        ResetBallPosition();
+        private void OnDisable()
+        {
+            playFabMaster.EventGameOver -= PerformGameOverAction;
+        }
 
-        playerMovement.enabled = false;
-    }
+        private void PerformGameOverAction(int score)
+        {
+            gameOverPanel.SetActive(true);
 
-    private void ResetBallPosition()
-    {
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        transform.position = Vector3.zero;
-    }
+            ResetBallPosition();
 
-    private void SetInitialReferences()
-    {
-        playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
-        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+            playerMovement.enabled = false;
+        }
+
+        private void ResetBallPosition()
+        {
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            transform.position = Vector3.zero;
+        }
+
+        private void SetInitialReferences()
+        {
+            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+            playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        }
     }
 }
