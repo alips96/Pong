@@ -2181,6 +2181,8 @@ MonoBehaviour:
   setPointInterval: 2
   acceleration: 0.3
   maxSpeed: 15
+  minPlayerSize: 0.17
+  playershrinkVolume: 0.01
 --- !u!114 &1769894094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2195,7 +2197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponentScoreText: {fileID: 237166438}
   playerScoreText: {fileID: 205900584}
-  winScore: 1
+  winScore: 2
 --- !u!1 &1899758737
 GameObject:
   m_ObjectHideFlags: 0

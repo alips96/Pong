@@ -16,6 +16,12 @@ namespace Pong.MP
         [SerializeField] private float acceleration = 0.3f;
         [SerializeField] private float maxSpeed = 15f;
 
+        [SerializeField] private float minPlayerSize = 0.17f;
+        [SerializeField] private float playershrinkVolume = 0.01f;
+
+        private bool playersListEmpty = true;
+        private GameObject[] playersObjects;
+
         private void OnEnable()
         {
             myrb = GetComponent<Rigidbody2D>();
@@ -67,12 +73,32 @@ namespace Pong.MP
         private void OnCollisionEnter2D(Collision2D collision)
         {
             float speed = lastVelocity.magnitude;
+            ContactPoint2D contactPoint = collision.contacts[0];
 
-            Vector3 myDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+            Vector3 myDirection = Vector3.Reflect(lastVelocity.normalized, contactPoint.normal);
             Vector2 myVelocity = myDirection * Mathf.Max(speed, 0);
 
-            if (lastVelocity.x * myDirection.x < 0) //if ball hits the players, because it toggles direction :)
+            if (lastVelocity.x * myDirection.x < 0) //if ball hits the players, it toggles direction :)
             {
+                //Shrink the players size
+                if (playersListEmpty)
+                {
+                    playersObjects = GameObject.FindGameObjectsWithTag("Player");
+
+                    if (playersObjects.Length.Equals(2))
+                        playersListEmpty = false;
+                }
+
+                foreach (GameObject item in playersObjects)
+                {
+                    Vector3 playerLocalScale = item.transform.localScale;
+
+                    if (playerLocalScale.y >= minPlayerSize)
+                    {
+                        item.transform.localScale = new Vector3(playerLocalScale.x, playerLocalScale.y - playershrinkVolume, 0);
+                    }
+                }
+
                 myVelocity += myDirection.normalized.x * new Vector2(acceleration, 0);
 
                 if (Mathf.Abs(myVelocity.x) > maxSpeed) //if it reaches max speed.
@@ -86,7 +112,7 @@ namespace Pong.MP
 
         private void OnTriggerEnter2D(Collider2D other) //The ball hits the bonus bars
         {
-            if (other.tag.Equals("OppBar"))
+            if (other.CompareTag("OppBar"))
             {
                 if (!PhotonNetwork.IsMasterClient)
                 {
@@ -114,15 +140,27 @@ namespace Pong.MP
         {
             if (obj.Code == 1 || obj.Code == 3)
             {
-                SetToZero();
+                ResetMatchSettings();
                 StartCoroutine(RestartSetPoint(setPointInterval, obj.CustomData.ToString()));
             }
         }
 
-        private void SetToZero()
+        private void ResetMatchSettings()
         {
             transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             transform.position = Vector3.zero;
+
+            if (playersObjects.Length.Equals(2))
+            {
+                foreach (var item in playersObjects)
+                {
+                    item.transform.localScale = new Vector3(0.02f, 0.5f, 1f);
+                }
+            }
+            else
+            {
+                Debug.LogError("Player list length is less than 2");
+            }
         }
 
         private IEnumerator RestartSetPoint(int seconds, string tag)
