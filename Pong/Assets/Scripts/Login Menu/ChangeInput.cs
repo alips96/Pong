@@ -22,26 +22,41 @@ namespace Pong.Menu
         {
             if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift))
             {
-                Selectable previous = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
-
-                if (previous != null)
-                {
-                    previous.Select();
-                }
+                SelectPrevious();
             }
             else if (Input.GetKeyDown(KeyCode.Tab))
             {
-                Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
-
-                if (next != null)
-                {
-                    next.Select();
-                }
+                SelectNext();
             }
             else if (Input.GetKeyDown(KeyCode.Return))
             {
-                submitButton.onClick.Invoke();
-                Debug.Log("Button Passed!");
+                Submit();
+            }
+        }
+
+        private void Submit()
+        {
+            submitButton.onClick.Invoke();
+            Debug.Log("Button Passed!");
+        }
+
+        private void SelectNext()
+        {
+            Selectable next = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+
+            if (next != null)
+            {
+                next.Select();
+            }
+        }
+
+        private void SelectPrevious()
+        {
+            Selectable previous = system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+
+            if (previous != null)
+            {
+                previous.Select();
             }
         }
     }

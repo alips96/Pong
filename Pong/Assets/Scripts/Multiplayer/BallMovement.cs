@@ -22,6 +22,8 @@ namespace Pong.MP
         private bool playersListEmpty = true;
         private GameObject[] playersObjects;
 
+        private float angleOffset = 0.5f;
+
         private void OnEnable()
         {
             myrb = GetComponent<Rigidbody2D>();
@@ -53,11 +55,32 @@ namespace Pong.MP
 
         private void SendInitialVelocityToClients()
         {
-            float[] eventArgs = new float[2] { Random.Range(-2f, 2f), 1 }; // first argument is the velocity. second one determines the direction.
+            float chosenRandomAngle = ChooseXAngle();
+
+            float[] eventArgs = new float[2] { chosenRandomAngle, 1 }; // first argument is the velocity. second one determines the direction.
 
             PhotonNetwork.RaiseEvent(0, eventArgs,
                 new RaiseEventOptions { Receivers = ReceiverGroup.All },
                 new SendOptions { Reliability = true });
+        }
+
+        private float ChooseXAngle()
+        {
+            float randomAngle = Random.Range(-2f, 2f);
+
+            if (randomAngle > -.2f && randomAngle < .2f)
+            {
+                if (randomAngle.Equals(0))
+                {
+                    randomAngle = angleOffset; //shift 0.5
+                }
+                else
+                {
+                    randomAngle += randomAngle / Mathf.Abs(randomAngle) * angleOffset;
+                }
+            }
+
+            return randomAngle;
         }
 
         IEnumerator WaitForTheClientToJoin()
@@ -99,11 +122,11 @@ namespace Pong.MP
                     }
                 }
 
-                myVelocity += myDirection.normalized.x * new Vector2(acceleration, 0);
+                myVelocity += myDirection.x * new Vector2(acceleration, 0);
 
                 if (Mathf.Abs(myVelocity.x) > maxSpeed) //if it reaches max speed.
                 {
-                    myVelocity = new Vector2(maxSpeed * myDirection.normalized.x, myVelocity.y);
+                    myVelocity = new Vector2(maxSpeed * myDirection.x, myVelocity.y);
                 }
             }
 
@@ -169,11 +192,11 @@ namespace Pong.MP
 
             if (PhotonNetwork.IsMasterClient)
             {
-                float randomNumber = Random.Range(-2f, 2f);
+                float randomNumber = ChooseXAngle();
 
                 if (tag.Equals("OppBar"))
                 {
-                    float[] eventArgs = new float[2] { randomNumber, 1f }; // first argument is the velocity. second one determines the direction.
+                    float[] eventArgs = new float[2] { randomNumber, 1f }; // first argument is the velocity. Second one determines the direction.
 
                     PhotonNetwork.RaiseEvent(0, eventArgs,
                         new RaiseEventOptions { Receivers = ReceiverGroup.All },
