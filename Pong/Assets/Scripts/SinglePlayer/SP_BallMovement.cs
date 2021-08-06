@@ -5,9 +5,10 @@ namespace Pong.SP
     public class SP_BallMovement : MonoBehaviour
     {
         private Rigidbody2D myrb;
-        private Vector3 lastVelocity;
 
-        [SerializeField] private float ballInitialSpeed = 5f;
+        [HideInInspector] public Vector3 lastVelocity;
+        public float ballInitialSpeed = 5f;
+
         [SerializeField] private float acceleration = 0.3f;
         [SerializeField] private float maxSpeed = 15f;
 
