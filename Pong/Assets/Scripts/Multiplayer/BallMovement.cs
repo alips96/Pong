@@ -13,8 +13,9 @@ namespace Pong.MP
 
         [SerializeField] private float ballInitialSpeed = 5f;
         [SerializeField] private int setPointInterval = 2;
-        [SerializeField] private float acceleration = 0.3f;
-        [SerializeField] private float maxSpeed = 15f;
+
+        public float acceleration = 0.3f;
+        public float maxSpeed = 15f;
 
         [SerializeField] private float minPlayerSize = 0.17f;
         [SerializeField] private float playershrinkVolume = 0.01f;
@@ -55,7 +56,7 @@ namespace Pong.MP
 
         private void SendInitialVelocityToClients()
         {
-            float chosenRandomAngle = ChooseXAngle();
+            float chosenRandomAngle = ChooseXAngle(Random.Range(-2f, 2f));
 
             float[] eventArgs = new float[2] { chosenRandomAngle, 1 }; // first argument is the velocity. second one determines the direction.
 
@@ -64,10 +65,8 @@ namespace Pong.MP
                 new SendOptions { Reliability = true });
         }
 
-        private float ChooseXAngle()
+        public float ChooseXAngle(float randomAngle)
         {
-            float randomAngle = Random.Range(-2f, 2f);
-
             if (randomAngle > -.2f && randomAngle < .2f)
             {
                 if (randomAngle.Equals(0))
@@ -104,33 +103,45 @@ namespace Pong.MP
             if (lastVelocity.x * myDirection.x < 0) //if ball hits the players, it toggles direction :)
             {
                 //Shrink the players size
-                if (playersListEmpty)
-                {
-                    playersObjects = GameObject.FindGameObjectsWithTag("Player");
+                ShrinkPlayersSize();
 
-                    if (playersObjects.Length.Equals(2))
-                        playersListEmpty = false;
-                }
-
-                foreach (GameObject item in playersObjects)
-                {
-                    Vector3 playerLocalScale = item.transform.localScale;
-
-                    if (playerLocalScale.y >= minPlayerSize)
-                    {
-                        item.transform.localScale = new Vector3(playerLocalScale.x, playerLocalScale.y - playershrinkVolume, 0);
-                    }
-                }
-
-                myVelocity += myDirection.x * new Vector2(acceleration, 0);
-
-                if (Mathf.Abs(myVelocity.x) > maxSpeed) //if it reaches max speed.
-                {
-                    myVelocity = new Vector2(maxSpeed * myDirection.x, myVelocity.y);
-                }
+                myVelocity = UpdateVelocity(myDirection, myVelocity);
             }
 
             myrb.velocity = myVelocity;
+        }
+
+        public Vector2 UpdateVelocity(Vector3 myDirection, Vector2 myVelocity)
+        {
+            myVelocity += myDirection.x * new Vector2(acceleration, 0);
+
+            if (Mathf.Abs(myVelocity.x) > maxSpeed) //if it reaches max speed.
+            {
+                myVelocity = new Vector2(maxSpeed * myDirection.x, myVelocity.y);
+            }
+
+            return myVelocity;
+        }
+
+        private void ShrinkPlayersSize()
+        {
+            if (playersListEmpty) //Getting all players
+            {
+                playersObjects = GameObject.FindGameObjectsWithTag("Player");
+
+                if (playersObjects.Length.Equals(2))
+                    playersListEmpty = false;
+            }
+
+            foreach (GameObject item in playersObjects)
+            {
+                Vector3 playerLocalScale = item.transform.localScale;
+
+                if (playerLocalScale.y >= minPlayerSize)
+                {
+                    item.transform.localScale = new Vector3(playerLocalScale.x, playerLocalScale.y - playershrinkVolume, 0);
+                }
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other) //The ball hits the bonus bars
@@ -192,7 +203,7 @@ namespace Pong.MP
 
             if (PhotonNetwork.IsMasterClient)
             {
-                float randomNumber = ChooseXAngle();
+                float randomNumber = ChooseXAngle(Random.Range(-2f, 2f));
 
                 if (tag.Equals("OppBar"))
                 {
