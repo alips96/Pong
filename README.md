@@ -18,3 +18,5 @@ For the multiplayer mode, we should first create a new room. Then a room is crea
 
 All the game notifications would be handled by discord. For this purpose, I have created a discord webhook.  
 Then, I copied and pasted the webhook URL to our script. Every time we wanna send a notification, we make an HTML call to this webhook with the desired parameters. These scripts are written in javascript and get executed entirely on the playfab cloud servers. I’ve also added some embeds for chatting purposes.
+
+The game performance is great! Running at 1600 FPS with 8 Batches on Unity Editor; VSync every vblank. Each system mostly runs a task and waits for a callback.
