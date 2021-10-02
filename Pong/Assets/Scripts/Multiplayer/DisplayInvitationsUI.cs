@@ -55,8 +55,9 @@ namespace Pong.MP
         {
             Debug.Log("friend: " + friend + " invited to the room: " + roomName);
 
-            InviteUI uiInvite = invitesUIFactory.Create();
+            InviteUI uiInvite = invitesUIFactory.Create(); //Instantiating the uiInvite prefab.
             uiInvite.transform.SetParent(invitationsContainer);
+
             uiInvite.Initialize(friend, roomName);
             contentRect.sizeDelta += increasedSize;
             invitationsList.Add(uiInvite);

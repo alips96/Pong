@@ -14,12 +14,12 @@ namespace Pong.MP
         private FriendInfo friendInfo;
 
         private EventMaster eventMaster;
-        //private Transform parentTransform;
+        private Transform parentTransform;
 
         private void OnEnable()
         {
             eventMaster.EventToggleInvitationUI += ToggleInvitationButton;
-            //transform.SetParent(parentTransform);
+            transform.SetParent(parentTransform);
         }
 
         private void OnDisable()
@@ -28,10 +28,10 @@ namespace Pong.MP
         }
 
         [Inject]
-        private void SetInitialReferences(EventMaster _eventMaster)
+        private void SetInitialReferences(EventMaster _eventMaster, Transform _parentTransform)
         {
             eventMaster = _eventMaster;
-            //parentTransform = _parentTransform;
+            parentTransform = _parentTransform;
         }
 
         private void ToggleInvitationButton()
@@ -74,6 +74,6 @@ namespace Pong.MP
             eventMaster.CallEventRemoveFriend(friendInfo.UserId);
         }
 
-        public class Factory : PlaceholderFactory<FriendsUI> { }
+        public class Factory : PlaceholderFactory<Transform, FriendsUI> { }
     }
 }

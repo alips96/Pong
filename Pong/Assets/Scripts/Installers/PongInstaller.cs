@@ -11,9 +11,7 @@ public class PongInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<EventMaster>().AsSingle();
-        Container.BindFactory<FriendsUI, FriendsUI.Factory>().FromComponentInNewPrefab(friendsUIPrefab);
+        Container.BindFactory<Transform, FriendsUI, FriendsUI.Factory>().FromComponentInNewPrefab(friendsUIPrefab);
         Container.BindFactory<InviteUI, InviteUI.Factory>().FromComponentInNewPrefab(invitesUIPrefab);
-        //Container.Bind<FriendsUI>().AsTransient().NonLazy();
-        //Container.Bind<FriendsUI>().FromNewComponentOnNewGameObject().AsTransient().NonLazy();
     }
 }

@@ -32,8 +32,9 @@ namespace Pong.MP
 
             foreach (FriendInfo item in friendList)
             {
-                FriendsUI friendUI = friendsUIFactory.Create();
-                friendUI.transform.SetParent(friendContainer);
+                //Instantiating friends ui prefab and pass the friendcontainer as its parent.
+                FriendsUI friendUI = friendsUIFactory.Create(friendContainer);
+
                 friendUI.SetUI(item);
             }
         }
