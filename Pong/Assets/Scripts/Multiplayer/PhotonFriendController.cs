@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -18,23 +19,23 @@ namespace Pong.MP
 
         [SerializeField] private GameObject friendsContainer;
 
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         private void Start()
         {
-            SetInitialReferences();
             friendsList = new List<PlayfabFriendInfo>();
-            playFabMaster.EventFriendsListUpdated += HandleFriendsUpdated;
+            eventMaster.EventFriendsListUpdated += HandleFriendsUpdated;
         }
 
         private void OnDestroy()
         {
-            playFabMaster.EventFriendsListUpdated -= HandleFriendsUpdated;
+            eventMaster.EventFriendsListUpdated -= HandleFriendsUpdated;
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMaster = transform.parent.GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         private void Update()
@@ -76,7 +77,7 @@ namespace Pong.MP
             else
             {
                 List<PhotonFriendInfo> friendList = new List<PhotonFriendInfo>();
-                playFabMaster.CallEventDisplayFriends(friendList);
+                eventMaster.CallEventDisplayFriends(friendList);
             }
         }
 
@@ -85,7 +86,7 @@ namespace Pong.MP
             Debug.Log($"Invoke UI to display Photon friends found: {friendList.Count}");
 
             if (friendsContainer.activeInHierarchy)
-                playFabMaster.CallEventDisplayFriends(friendList);
+                eventMaster.CallEventDisplayFriends(friendList);
         }
     }
 }

@@ -4,6 +4,7 @@ using Photon.Pun;
 using Pong.General;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -11,20 +12,18 @@ namespace Pong.MP
     {
         [SerializeField] private string nickName;
         private ChatClient chatClient;
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         private void OnEnable()
         {
-            SetInitialReferences();
-
-            playFabMaster.EventUserLoggedIn += ConnectToPhotonChat;
-            playFabMaster.EventInviteFriend += InviteFriend;
+            eventMaster.EventUserLoggedIn += ConnectToPhotonChat;
+            eventMaster.EventInviteFriend += InviteFriend;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventUserLoggedIn -= ConnectToPhotonChat;
-            playFabMaster.EventInviteFriend -= InviteFriend;
+            eventMaster.EventUserLoggedIn -= ConnectToPhotonChat;
+            eventMaster.EventInviteFriend -= InviteFriend;
         }
 
         private void Update()
@@ -59,9 +58,10 @@ namespace Pong.MP
             chatClient.ConnectUsingSettings(chatSettings);
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMaster = transform.parent.GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         public void DebugReturn(DebugLevel level, string message)
@@ -104,7 +104,7 @@ namespace Pong.MP
                 if (!sender.Equals(senderName, StringComparison.OrdinalIgnoreCase))
                 {
                     Debug.Log(sender + ": " + message);
-                    playFabMaster.CallEventInvitedToTheRoom(sender, message.ToString());
+                    eventMaster.CallEventInvitedToTheRoom(sender, message.ToString());
                 }
             }
         }

@@ -4,6 +4,7 @@ using PlayFab.ClientModels;
 using UnityEngine.UI;
 using Photon.Pun;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP.PlayFab
 {
@@ -17,7 +18,7 @@ namespace Pong.MP.PlayFab
         [SerializeField] private GameObject usernamePanel;
         [SerializeField] private GameObject loginPanel;
 
-        private EventMaster playFabMasterScript;
+        private EventMaster eventMaster;
 
         private void Start()
         {
@@ -26,7 +27,6 @@ namespace Pong.MP.PlayFab
                 PlayFabSettings.TitleId = "B07E4";
             }
 
-            SetInitialReferences();
             CheckIfLeaveRoomRequired();
             CheckIfLoginReqired();
         }
@@ -45,14 +45,15 @@ namespace Pong.MP.PlayFab
 
             if (!string.IsNullOrEmpty(name))
             {
-                playFabMasterScript.CallEventUserLoggedIn(name);
+                eventMaster.CallEventUserLoggedIn(name);
                 PlayerPrefs.SetString("LOGGEDIN", string.Empty);
             }
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMasterScript = GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         public void RegisterPlayer() //Called by Sign Up Button.
@@ -112,7 +113,7 @@ namespace Pong.MP.PlayFab
             string displayName = result.DisplayName;
             PlayerPrefs.SetString("DISPLAYNAME", displayName);
 
-            playFabMasterScript.CallEventUserLoggedIn(displayName);
+            eventMaster.CallEventUserLoggedIn(displayName);
         }
 
         private void TogglePanels()
@@ -145,7 +146,7 @@ namespace Pong.MP.PlayFab
             string displayName = result.InfoResultPayload.PlayerProfile.DisplayName;
             PlayerPrefs.SetString("DISPLAYNAME", displayName);
 
-            playFabMasterScript.CallEventUserLoggedIn(displayName);
+            eventMaster.CallEventUserLoggedIn(displayName);
         }
 
         public void ResetPassword() //Called by reset password button.

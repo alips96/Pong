@@ -4,28 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP.PlayFab
 {
     public class PlayFabFriendController : MonoBehaviour
     {
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
         private List<FriendInfo> friendsList;
 
         private void OnEnable()
         {
             SetInitialReferences();
 
-            playFabMaster.EventAddFriend += AddFrindToPlayFab;
-            playFabMaster.EventRemoveFriend += ApplyRemoveFriend;
-            playFabMaster.EventGetPhotonFriends += GetPhotonFriends;
+            eventMaster.EventAddFriend += AddFrindToPlayFab;
+            eventMaster.EventRemoveFriend += ApplyRemoveFriend;
+            eventMaster.EventGetPhotonFriends += GetPhotonFriends;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventAddFriend -= AddFrindToPlayFab;
-            playFabMaster.EventRemoveFriend -= ApplyRemoveFriend;
-            playFabMaster.EventGetPhotonFriends -= GetPhotonFriends;
+            eventMaster.EventAddFriend -= AddFrindToPlayFab;
+            eventMaster.EventRemoveFriend -= ApplyRemoveFriend;
+            eventMaster.EventGetPhotonFriends -= GetPhotonFriends;
+        }
+
+        [Inject]
+        private void SetScriptReferences(EventMaster _eventMaster)
+        {
+            eventMaster = _eventMaster;
         }
 
         private void GetPhotonFriends()
@@ -36,7 +43,6 @@ namespace Pong.MP.PlayFab
         private void SetInitialReferences()
         {
             friendsList = new List<FriendInfo>();
-            playFabMaster = GetComponent<EventMaster>();
         }
 
         private void ApplyRemoveFriend(string name)
@@ -86,7 +92,7 @@ namespace Pong.MP.PlayFab
         private void OnGetFriendsSuccess(GetFriendsListResult result)
         {
             friendsList = result.Friends;
-            playFabMaster.CallEventFriendsListUpdated(friendsList);
+            eventMaster.CallEventFriendsListUpdated(friendsList);
         }
 
         private void OnError(PlayFabError error)

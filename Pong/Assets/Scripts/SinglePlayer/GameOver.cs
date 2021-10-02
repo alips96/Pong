@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Pong.General;
+using Zenject;
 
 namespace Pong.SP
 {
@@ -8,18 +9,18 @@ namespace Pong.SP
         [SerializeField] private GameObject gameOverPanel;
 
         private PlayerMovement playerMovement;
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         private void OnEnable()
         {
-            SetInitialReferences();
+            SetPlayerMovementReference();
 
-            playFabMaster.EventGameOver += PerformGameOverAction;
+            eventMaster.EventGameOver += PerformGameOverAction;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventGameOver -= PerformGameOverAction;
+            eventMaster.EventGameOver -= PerformGameOverAction;
         }
 
         private void PerformGameOverAction(int score)
@@ -37,10 +38,15 @@ namespace Pong.SP
             transform.position = Vector3.zero;
         }
 
-        private void SetInitialReferences()
+        private void SetPlayerMovementReference()
         {
-            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
             playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        }
+
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
+        {
+            eventMaster = _eventMaster;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Pong.General;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Pong.SP
 {
@@ -8,11 +9,13 @@ namespace Pong.SP
     {
         [SerializeField] private Text scoreText;
         private int score;
-        private EventMaster playfabMasterScript;
 
-        private void Start()
+        private EventMaster eventMaster;
+
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playfabMasterScript = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -26,7 +29,7 @@ namespace Pong.SP
 
         private void OnTriggerEnter2D(Collider2D other) //GameOver
         {
-            playfabMasterScript.CallEventGameOver(score);
+            eventMaster.CallEventGameOver(score);
             score = 0;
         }
     }

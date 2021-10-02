@@ -2,6 +2,7 @@
 using Photon.Realtime;
 using UnityEngine;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -12,18 +13,25 @@ namespace Pong.MP
 
         private FriendInfo friendInfo;
 
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
+        //private Transform parentTransform;
 
         private void OnEnable()
         {
-            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
-
-            playFabMaster.EventToggleInvitationUI += ToggleInvitationButton;
+            eventMaster.EventToggleInvitationUI += ToggleInvitationButton;
+            //transform.SetParent(parentTransform);
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventToggleInvitationUI -= ToggleInvitationButton;
+            eventMaster.EventToggleInvitationUI -= ToggleInvitationButton;
+        }
+
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
+        {
+            eventMaster = _eventMaster;
+            //parentTransform = _parentTransform;
         }
 
         private void ToggleInvitationButton()
@@ -51,8 +59,8 @@ namespace Pong.MP
         {
             if (Photon.Pun.PhotonNetwork.InRoom)
             {
-                Debug.Log("Inviting friend Action" + friendInfo.UserId);
-                playFabMaster.CallEventInviteFriend(friendInfo.UserId);
+                Debug.Log("Inviting friend Action " + friendInfo.UserId);
+                eventMaster.CallEventInviteFriend(friendInfo.UserId);
             }
             else
             {
@@ -63,7 +71,9 @@ namespace Pong.MP
 
         public void RemoveFriend() //Called by remove button
         {
-            playFabMaster.CallEventRemoveFriend(friendInfo.UserId);
+            eventMaster.CallEventRemoveFriend(friendInfo.UserId);
         }
+
+        public class Factory : PlaceholderFactory<FriendsUI> { }
     }
 }

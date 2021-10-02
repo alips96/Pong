@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -13,19 +14,20 @@ namespace Pong.MP
         [SerializeField] private GameObject leaveRoomButton;
         [SerializeField] private GameObject singlePlayerButton;
 
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         private void Start()
         {
-            SetInitialReferences();
-            playFabMaster.EventUserLoggedIn += ConnectToPhoton;
-            playFabMaster.EventRoomInvitationAccepted += RoomInvitationAccepted;
+            PhotonNetwork.AutomaticallySyncScene = true; //To scync scenes again. it was turned off previously.
+
+            eventMaster.EventUserLoggedIn += ConnectToPhoton;
+            eventMaster.EventRoomInvitationAccepted += RoomInvitationAccepted;
         }
 
         private void OnDestroy()
         {
-            playFabMaster.EventUserLoggedIn -= ConnectToPhoton;
-            playFabMaster.EventRoomInvitationAccepted -= RoomInvitationAccepted;
+            eventMaster.EventUserLoggedIn -= ConnectToPhoton;
+            eventMaster.EventRoomInvitationAccepted -= RoomInvitationAccepted;
         }
 
         private void RoomInvitationAccepted(string roomName)
@@ -69,10 +71,10 @@ namespace Pong.MP
             }
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMaster = transform.parent.GetComponent<EventMaster>();
-            PhotonNetwork.AutomaticallySyncScene = true; //To scync scenes again. it was turned off previously.
+            eventMaster = _eventMaster;
         }
 
         private void ConnectToPhoton(string nickName)
@@ -109,7 +111,7 @@ namespace Pong.MP
         {
             Debug.Log("Connected to a photon lobby");
 
-            playFabMaster.CallEventGetPhotonFriends();
+            eventMaster.CallEventGetPhotonFriends();
 
             string roomName = PlayerPrefs.GetString("PhotonRoom");
 
@@ -137,7 +139,9 @@ namespace Pong.MP
         {
             Debug.Log("Created a photon room named " + PhotonNetwork.CurrentRoom.Name);
 
-            playFabMaster.CallEventToggleInvitationUI(); //To enable the players to invite their friends.
+            eventMaster.CallEventToggleInvitationUI(); //To enable the players to invite their friends.
+            //Debug.Log("Calling the bug:");
+            //customEventMaster.CallEventToggleUI();
         }
 
         public override void OnJoinedRoom()
@@ -174,7 +178,7 @@ namespace Pong.MP
                 Debug.Log(myName + " Vs " + opponentName);
 
                 PhotonNetwork.CurrentRoom.IsOpen = false;
-                playFabMaster.CallEventDiscordJoinMessage(myName, opponentName);
+                eventMaster.CallEventDiscordJoinMessage(myName, opponentName);
 
                 PhotonNetwork.LoadLevel(2); //Multiplayer Scence
             }

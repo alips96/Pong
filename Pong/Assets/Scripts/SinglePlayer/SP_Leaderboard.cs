@@ -3,12 +3,13 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
 using Pong.General;
+using Zenject;
 
 namespace Pong.SP
 {
     public class SP_Leaderboard : MonoBehaviour
     {
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
         [SerializeField] private int maxResultPlayerCount = 10;
 
         [SerializeField] private GameObject rowPrefab;
@@ -18,19 +19,18 @@ namespace Pong.SP
 
         private void OnEnable()
         {
-            SetInitialReferences();
-
-            playFabMaster.EventGameOver += SendToLeaderboard;
+            eventMaster.EventGameOver += SendToLeaderboard;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventGameOver -= SendToLeaderboard;
+            eventMaster.EventGameOver -= SendToLeaderboard;
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMaster = GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         private void SendToLeaderboard(int score)

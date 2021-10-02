@@ -2,23 +2,22 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP.Discord
 {
     public class DiscordLogin : MonoBehaviour
     {
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         void OnEnable()
         {
-            SetInitialReferences();
-
-            playFabMaster.EventUserLoggedIn += DisplayLoginMessage;
+            eventMaster.EventUserLoggedIn += DisplayLoginMessage;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventUserLoggedIn -= DisplayLoginMessage;
+            eventMaster.EventUserLoggedIn -= DisplayLoginMessage;
         }
 
         private void DisplayLoginMessage(string name)
@@ -46,9 +45,10 @@ namespace Pong.MP.Discord
             Debug.LogError(error.GenerateErrorReport());
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMaster = transform.parent.GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
     }
 }
