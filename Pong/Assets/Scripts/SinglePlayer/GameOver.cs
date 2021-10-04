@@ -28,8 +28,14 @@ namespace Pong.SP
             gameOverPanel.SetActive(true);
 
             ResetBallPosition();
+            ResetPlayerSize();
 
             playerMovement.enabled = false;
+        }
+
+        private void ResetPlayerSize()
+        {
+            playerMovement.transform.localScale = new Vector3(0.02f, 0.5f, 1);
         }
 
         private void ResetBallPosition()

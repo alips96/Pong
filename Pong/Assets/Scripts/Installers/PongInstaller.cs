@@ -13,5 +13,7 @@ public class PongInstaller : MonoInstaller
         Container.Bind<EventMaster>().AsSingle();
         Container.BindFactory<Transform, FriendsUI, FriendsUI.Factory>().FromComponentInNewPrefab(friendsUIPrefab);
         Container.BindFactory<InviteUI, InviteUI.Factory>().FromComponentInNewPrefab(invitesUIPrefab);
+
+        Container.Bind<IScoreHandler_SP>().To<ScoreHandler_SP>().AsSingle();
     }
 }
