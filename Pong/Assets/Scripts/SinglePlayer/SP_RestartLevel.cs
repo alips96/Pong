@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Pong.General;
+using Zenject;
 
 namespace Pong.SP
 {
@@ -12,14 +13,10 @@ namespace Pong.SP
         [SerializeField] private Text scoreText;
         [SerializeField] private float ballInitialSpeed = 5f;
 
-        private void Start()
+        [Inject]
+        private void SetInitialReferences(PlayerMovement _playerMovement)
         {
-            SetInitialReferences();
-        }
-
-        private void SetInitialReferences()
-        {
-            playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+            playerMovement = _playerMovement;
         }
 
         public void ResumeGame() //Called by restart level button.

@@ -13,8 +13,6 @@ namespace Pong.SP
 
         private void OnEnable()
         {
-            SetPlayerMovementReference();
-
             eventMaster.EventGameOver += PerformGameOverAction;
         }
 
@@ -44,15 +42,11 @@ namespace Pong.SP
             transform.position = Vector3.zero;
         }
 
-        private void SetPlayerMovementReference()
-        {
-            playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
-        }
-
         [Inject]
-        private void SetInitialReferences(EventMaster _eventMaster)
+        private void SetInitialReferences(EventMaster _eventMaster, PlayerMovement _playerMovement)
         {
             eventMaster = _eventMaster;
+            playerMovement = _playerMovement;
         }
     }
 }
