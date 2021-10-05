@@ -12,5 +12,6 @@ public class Sp_Installer : MonoInstaller
         Container.Bind<EventMaster>().AsSingle();
         Container.Bind<IScoreHandler_SP>().To<ScoreHandler_SP>().AsSingle();
         Container.Bind<PlayerMovement>().FromComponentOn(playerMovementScript).AsSingle();
+        Container.Bind<SP_BallMovementModel>().AsSingle();
     }
 }

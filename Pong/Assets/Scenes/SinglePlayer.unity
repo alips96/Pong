@@ -3082,7 +3082,7 @@ MonoBehaviour:
   acceleration: 0.3
   maxSpeed: 15
   minPlayerSize: 0.15
-  playershrinkVolume: 0.02
+  playerShrinkVolume: 0.02
 --- !u!114 &1769894094
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,15 +7,19 @@ namespace Tests
 {
     public class BallMovementTest
     {
+        private SP_BallMovementModel ballMovementLogic;
+
+        public BallMovementTest()
+        {
+            ballMovementLogic = new SP_BallMovementModel();
+        }
+
         [Test]
         [TestCase(0.2f, 1f, .7f, 5)]
         [TestCase(.6f, .4f, .3f, 11)]
         public void TestIncrementSpeed(float dx, float dy, float dz, float speed)
         {
-            GameObject go = new GameObject();
-            SP_BallMovement spBallMovementScript = go.AddComponent<SP_BallMovement>();
-
-            Vector2 velocity = spBallMovementScript.UpdateVelocity(speed, new Vector3(dx, dy, dz));
+            Vector2 velocity = ballMovementLogic.UpdateVelocity(speed, new Vector3(dx, dy, dz), speed, .3f, 15f);
 
             Assert.AreEqual(speed * new Vector2(dx, dy), velocity);
         }

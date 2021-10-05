@@ -38,13 +38,13 @@ namespace Pong.SP
             var request = new UpdatePlayerStatisticsRequest
             {
                 Statistics = new System.Collections.Generic.List<StatisticUpdate>
-            {
-                new StatisticUpdate
                 {
-                    StatisticName = "Highscore",
-                    Value = score
+                    new StatisticUpdate
+                    {
+                        StatisticName = "Highscore",
+                        Value = score
+                    }
                 }
-            }
             };
 
             PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, OnError);

@@ -15,7 +15,9 @@ namespace Tests
         [TestCase(7,12,"58.3")]
         public void WinPercentageCalculation(int winCount, int matchCount, string expected)
         {
-            PlayerStatsUI playerStats = new PlayerStatsUI();
+            GameObject go = new GameObject();
+            PlayerStatsUI playerStats = go.AddComponent<PlayerStatsUI>();
+
             string count = playerStats.CalculateWinPercentage(winCount, matchCount);
 
             Assert.AreEqual(count, expected);
