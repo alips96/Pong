@@ -19,25 +19,20 @@ namespace Pong.MP.PlayFab
 
             eventMaster.EventAddFriend += AddFrindToPlayFab;
             eventMaster.EventRemoveFriend += ApplyRemoveFriend;
-            eventMaster.EventGetPhotonFriends += GetPhotonFriends;
+            eventMaster.EventGetPhotonFriends += GetAllFriends;
         }
 
         private void OnDisable()
         {
             eventMaster.EventAddFriend -= AddFrindToPlayFab;
             eventMaster.EventRemoveFriend -= ApplyRemoveFriend;
-            eventMaster.EventGetPhotonFriends -= GetPhotonFriends;
+            eventMaster.EventGetPhotonFriends -= GetAllFriends;
         }
 
         [Inject]
         private void SetScriptReferences(EventMaster _eventMaster)
         {
             eventMaster = _eventMaster;
-        }
-
-        private void GetPhotonFriends()
-        {
-            GetAllFriends();
         }
 
         private void SetInitialReferences()

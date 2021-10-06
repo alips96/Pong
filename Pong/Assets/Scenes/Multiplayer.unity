@@ -1873,6 +1873,7 @@ MonoBehaviour:
     type: 3}
   invitesUIPrefab: {fileID: 1860657680075743200, guid: 1a55d2c978c50184389c962ccb018499,
     type: 3}
+  buttonStatsUI: {fileID: 0}
 --- !u!114 &1602596329
 MonoBehaviour:
   m_ObjectHideFlags: 0

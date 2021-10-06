@@ -1,23 +1,26 @@
 ﻿using Pong.General;
 
-public class ScoreHandler_SP : IScoreHandler_SP
+namespace Pong.SP
 {
-    private int score;
-    private EventMaster eventMaster;
-
-    public ScoreHandler_SP(EventMaster _eventMaster)
+    public class ScoreHandler_SP : IScoreHandler_SP
     {
-        eventMaster = _eventMaster;
-    }
+        private int score;
+        private EventMaster eventMaster;
 
-    public int AddPoint()
-    {
-        return ++score;
-    }
+        public ScoreHandler_SP(EventMaster _eventMaster)
+        {
+            eventMaster = _eventMaster;
+        }
 
-    public void PerformGameOver()
-    {
-        eventMaster.CallEventGameOver(score);
-        score = 0;
+        public int AddPoint()
+        {
+            return ++score;
+        }
+
+        public void PerformGameOver()
+        {
+            eventMaster.CallEventGameOver(score);
+            score = 0;
+        }
     }
 }

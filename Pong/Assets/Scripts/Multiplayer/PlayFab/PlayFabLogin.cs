@@ -163,7 +163,7 @@ namespace Pong.MP.PlayFab
 
         private void OnPasswordReset(SendAccountRecoveryEmailResult result)
         {
-            statusMessage.text = "Password sent to your email!";
+            statusMessage.text = "Password sent to your email address!";
         }
     }
 }

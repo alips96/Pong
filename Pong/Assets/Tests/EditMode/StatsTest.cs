@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
+﻿using NUnit.Framework;
 using Pong.MP.PlayFab;
 
 namespace Tests
@@ -15,8 +11,7 @@ namespace Tests
         [TestCase(7,12,"58.3")]
         public void WinPercentageCalculation(int winCount, int matchCount, string expected)
         {
-            GameObject go = new GameObject();
-            PlayerStatsUI playerStats = go.AddComponent<PlayerStatsUI>();
+            PlayerStatsModel playerStats = new PlayerStatsModel();
 
             string count = playerStats.CalculateWinPercentage(winCount, matchCount);
 

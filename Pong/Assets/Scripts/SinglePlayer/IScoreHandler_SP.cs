@@ -1,5 +1,8 @@
-﻿public interface IScoreHandler_SP
+﻿namespace Pong.SP
 {
-    int AddPoint();
-    void PerformGameOver();
+    public interface IScoreHandler_SP
+    {
+        int AddPoint();
+        void PerformGameOver();
+    }
 }

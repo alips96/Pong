@@ -763,6 +763,7 @@ MonoBehaviour:
     type: 3}
   invitesUIPrefab: {fileID: 1860657680075743200, guid: 1a55d2c978c50184389c962ccb018499,
     type: 3}
+  buttonStatsUI: {fileID: 1773219378}
 --- !u!114 &208720842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6673,6 +6674,7 @@ GameObject:
   - component: {fileID: 1773219381}
   - component: {fileID: 1773219380}
   - component: {fileID: 1773219383}
+  - component: {fileID: 1773219384}
   m_Layer: 5
   m_Name: ButtonDisplayStats
   m_TagString: Untagged
@@ -6743,7 +6745,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1773219383}
+      - m_Target: {fileID: 1773219384}
         m_MethodName: GetStatsButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -6810,6 +6812,18 @@ MonoBehaviour:
   percentageText: {fileID: 293045591}
   statsPanel: {fileID: 1099460787}
   displayInterval: 2
+--- !u!114 &1773219384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773219378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f17594d6084454db86ab65e1c3598e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1786976547
 GameObject:
   m_ObjectHideFlags: 0

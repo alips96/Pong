@@ -31,10 +31,6 @@ namespace Pong.MP
         {
             Debug.Log("Accept Invite Action");
 
-            if(eventMaster == null)
-            {
-                Debug.LogError("NULL Unfortunately");
-            }
             eventMaster.CallEventInviteAccepted(this);
             eventMaster.CallEventRoomInvitationAccepted(roomName);
         }
