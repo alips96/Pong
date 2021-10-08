@@ -1866,14 +1866,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1602596327}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bab1d72c20f9c1d4ab9f79f3773c2bde, type: 3}
+  m_Script: {fileID: 11500000, guid: 02eb58eef20fcfa4a83758e86f1667b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  friendsUIPrefab: {fileID: 273555666592850565, guid: 9f7b8858f2e256e4a8f8d6453a8a0405,
-    type: 3}
-  invitesUIPrefab: {fileID: 1860657680075743200, guid: 1a55d2c978c50184389c962ccb018499,
-    type: 3}
-  buttonStatsUI: {fileID: 0}
 --- !u!114 &1602596329
 MonoBehaviour:
   m_ObjectHideFlags: 0
