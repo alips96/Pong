@@ -53,7 +53,7 @@ namespace Pong.MP
                 }
 
                 if (friendsContainer.activeInHierarchy)
-                    photonFriendModel.FindPhotonFriends(photonFriendModel.friendsList);
+                    photonFriendModel.FindPhotonFriends();
             }
         }
 

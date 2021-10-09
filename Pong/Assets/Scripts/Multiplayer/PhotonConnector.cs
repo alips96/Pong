@@ -140,8 +140,6 @@ namespace Pong.MP
             Debug.Log("Created a photon room named " + PhotonNetwork.CurrentRoom.Name);
 
             eventMaster.CallEventToggleInvitationUI(); //To enable the players to invite their friends.
-            //Debug.Log("Calling the bug:");
-            //customEventMaster.CallEventToggleUI();
         }
 
         public override void OnJoinedRoom()

@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using PlayfabFriendInfo = PlayFab.ClientModels.FriendInfo;
 using PhotonFriendInfo = Photon.Realtime.FriendInfo;
-using System;
 using Photon.Pun;
 using Pong.General;
 using System.Linq;
@@ -25,16 +23,16 @@ namespace Pong.MP
         public void HandleFriendsUpdated(List<PlayfabFriendInfo> friends)
         {
             friendsList = friends;
-            FindPhotonFriends(friendsList);
+            FindPhotonFriends();
         }
 
-        public void FindPhotonFriends(List<PlayfabFriendInfo> friends)
+        public void FindPhotonFriends()
         {
-            Debug.Log($"Handle getting Photon friends: {friends.Count}");
+            Debug.Log($"Handle getting Photon friends: {friendsList.Count}");
 
-            if (friends.Count != 0)
+            if (friendsList.Count != 0)
             {
-                string[] friendDisplayNames = friends.Select(f => f.TitleDisplayName).ToArray();
+                string[] friendDisplayNames = friendsList.Select(f => f.TitleDisplayName).ToArray();
 
                 if (PhotonNetwork.IsConnectedAndReady && !PhotonNetwork.InRoom && PhotonNetwork.InLobby)
                     PhotonNetwork.FindFriends(friendDisplayNames);
