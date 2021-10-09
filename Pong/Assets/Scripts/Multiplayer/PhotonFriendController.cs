@@ -1,10 +1,8 @@
 ﻿using Photon.Pun;
-using PlayfabFriendInfo = PlayFab.ClientModels.FriendInfo;
 using PhotonFriendInfo = Photon.Realtime.FriendInfo;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Linq;
 using Pong.General;
 using Zenject;
 
@@ -13,29 +11,30 @@ namespace Pong.MP
     public class PhotonFriendController : MonoBehaviourPunCallbacks
     {
         [SerializeField] private float refreshCooldown = 15f;
-        [SerializeField] private float refreshCountdown = 0f;
-        [SerializeField] private List<PlayfabFriendInfo> friendsList;
+
+        private float refreshCountdown = 0f;
         public static Action<List<PhotonFriendInfo>> OnDisplayFriends = delegate { };
 
         [SerializeField] private GameObject friendsContainer;
 
         private EventMaster eventMaster;
+        private PhotonFriendModel photonFriendModel;
 
         private void Start()
         {
-            friendsList = new List<PlayfabFriendInfo>();
-            eventMaster.EventFriendsListUpdated += HandleFriendsUpdated;
+            eventMaster.EventFriendsListUpdated += photonFriendModel.HandleFriendsUpdated;
         }
 
         private void OnDestroy()
         {
-            eventMaster.EventFriendsListUpdated -= HandleFriendsUpdated;
+            eventMaster.EventFriendsListUpdated -= photonFriendModel.HandleFriendsUpdated;
         }
 
         [Inject]
-        private void SetInitialReferences(EventMaster _eventMaster)
+        private void SetInitialReferences(EventMaster _eventMaster, PhotonFriendModel friendModel)
         {
             eventMaster = _eventMaster;
+            photonFriendModel = friendModel;
         }
 
         private void Update()
@@ -54,30 +53,7 @@ namespace Pong.MP
                 }
 
                 if (friendsContainer.activeInHierarchy)
-                    FindPhotonFriends(friendsList);
-            }
-        }
-
-        private void HandleFriendsUpdated(List<PlayfabFriendInfo> friends)
-        {
-            friendsList = friends;
-            FindPhotonFriends(friendsList);
-        }
-
-        private void FindPhotonFriends(List<PlayfabFriendInfo> friends)
-        {
-            Debug.Log($"Handle getting Photon friends: {friends.Count}");
-            if (friends.Count != 0)
-            {
-                string[] friendDisplayNames = friends.Select(f => f.TitleDisplayName).ToArray();
-
-                if (PhotonNetwork.IsConnectedAndReady && !PhotonNetwork.InRoom && PhotonNetwork.InLobby)
-                    PhotonNetwork.FindFriends(friendDisplayNames);
-            }
-            else
-            {
-                List<PhotonFriendInfo> friendList = new List<PhotonFriendInfo>();
-                eventMaster.CallEventDisplayFriends(friendList);
+                    photonFriendModel.FindPhotonFriends(photonFriendModel.friendsList);
             }
         }
 

@@ -18,5 +18,7 @@ public class PongInstaller : MonoInstaller
 
         Container.Bind<PlayerStatsModel>().AsSingle();
         Container.Bind<PlayerStatsView>().FromComponentOn(buttonStatsUI).AsSingle();
+
+        Container.Bind<PhotonFriendModel>().AsSingle();
     }
 }
