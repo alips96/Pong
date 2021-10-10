@@ -7,11 +7,13 @@ namespace Tests
 {
     public class BallMovementTest
     {
-        private SP_BallMovementModel ballMovementLogic;
+        private SP_BallMovementModel sp_ballMovement;
+        private BallMovementModel mp_ballMovement;
 
         public BallMovementTest()
         {
-            ballMovementLogic = new SP_BallMovementModel();
+            sp_ballMovement = new SP_BallMovementModel();
+            mp_ballMovement = new BallMovementModel();
         }
 
         [Test]
@@ -19,7 +21,7 @@ namespace Tests
         [TestCase(.6f, .4f, .3f, 11)]
         public void TestIncrementSpeed(float dx, float dy, float dz, float speed)
         {
-            Vector2 velocity = ballMovementLogic.UpdateVelocity(speed, new Vector3(dx, dy, dz), speed, .3f, 15f);
+            Vector2 velocity = sp_ballMovement.UpdateVelocity(speed, new Vector3(dx, dy, dz), speed, .3f, 15f);
 
             Assert.AreEqual(speed * new Vector2(dx, dy), velocity);
         }
@@ -32,9 +34,7 @@ namespace Tests
         [TestCase(-.02f, -.52f)]
         public void TestInitialVelocity(float randomInput, float expected)
         {
-            BallMovementModel moveBallScript = new BallMovementModel();
-
-            float angle = moveBallScript.ChooseXAngle(randomInput);
+            float angle = mp_ballMovement.ChooseXAngle(randomInput);
 
             Assert.AreEqual(expected, angle);
         }
@@ -45,13 +45,11 @@ namespace Tests
         [TestCase(-1, -20f, -15f)]
         public void TestSubsequentVelocity(float dx, float vx, float evx)
         {
-            BallMovementModel moveBallScript = new BallMovementModel();
+            Vector2 velocity = mp_ballMovement.UpdateVelocity(new Vector3(dx, -.1f, 0), new Vector2(vx, -.6f));
 
-            Vector2 velocity = moveBallScript.UpdateVelocity(new Vector3(dx, -.1f, 0), new Vector2(vx, -.6f));
-
-            if (Mathf.Abs(vx) > moveBallScript.maxSpeed)
+            if (Mathf.Abs(vx) > mp_ballMovement.maxSpeed)
             {
-                Assert.AreEqual(dx * moveBallScript.maxSpeed, velocity.x);
+                Assert.AreEqual(dx * mp_ballMovement.maxSpeed, velocity.x);
             }
             else
             {

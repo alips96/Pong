@@ -13,10 +13,7 @@ namespace Pong.MP
 
         [SerializeField] private int setPointInterval = 2;
 
-        public float acceleration = 0.3f;
-        public float maxSpeed = 15f;
-
-        private IMoveBall moveBallBehavior;
+        private IMoveBall moveBallBehavior; //Model
 
         private void OnEnable()
         {

@@ -7,17 +7,17 @@ namespace Pong.MP
 {
     public class BallMovementModel : IMoveBall
     {
-        private float angleOffset = 0.5f;
         private bool playersListEmpty = true;
         private GameObject[] playersObjects;
         private Vector3 initialPlayerScale = new Vector3(0.02f, 0.5f, 1f);
+
         private float ballInitialSpeed = 5f;
+        private float minPlayerSize = 0.17f;
+        private float playershrinkVolume = 0.01f;
+        private float angleOffset = 0.5f;
 
         public float acceleration = 0.3f;
         public float maxSpeed = 15f;
-
-        private float minPlayerSize = 0.17f;
-        private float playershrinkVolume = 0.01f;
 
         public void SendInitialVelocityToClients()
         {
