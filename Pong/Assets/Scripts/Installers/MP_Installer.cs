@@ -9,6 +9,7 @@ namespace Pong.MP
         {
             Container.Bind<EventMaster>().AsSingle();
             Container.Bind<IScoreHandler_MP>().To<ScoreHandlerModel>().AsSingle();
+            Container.Bind<IMoveBall>().To<BallMovementModel>().AsSingle();
         }
     }
 }

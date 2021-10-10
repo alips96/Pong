@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using ExitGames.Client.Photon;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -11,32 +11,35 @@ namespace Pong.MP
         private Rigidbody2D myrb;
         private Vector3 lastVelocity;
 
-        [SerializeField] private float ballInitialSpeed = 5f;
         [SerializeField] private int setPointInterval = 2;
 
         public float acceleration = 0.3f;
         public float maxSpeed = 15f;
 
-        [SerializeField] private float minPlayerSize = 0.17f;
-        [SerializeField] private float playershrinkVolume = 0.01f;
-
-        private bool playersListEmpty = true;
-        private GameObject[] playersObjects;
-
-        private float angleOffset = 0.5f;
+        private IMoveBall moveBallBehavior;
 
         private void OnEnable()
         {
-            myrb = GetComponent<Rigidbody2D>();
+            FillInitialComponents();
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                StartCoroutine(WaitForTheClientToJoin());
-                SendInitialVelocityToClients();
-            }
+            SyncrinizeSceneToClients();
 
             PhotonNetwork.NetworkingClient.EventReceived += SetVelocity;
             PhotonNetwork.NetworkingClient.EventReceived += ResetPosAndSpeed;
+        }
+
+        private void FillInitialComponents()
+        {
+            myrb = GetComponent<Rigidbody2D>();
+        }
+
+        private void SyncrinizeSceneToClients()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                StartCoroutine(WaitForTheClientToJoin());
+                moveBallBehavior.SendInitialVelocityToClients();
+            }
         }
 
         private void OnDisable()
@@ -45,41 +48,18 @@ namespace Pong.MP
             PhotonNetwork.NetworkingClient.EventReceived -= ResetPosAndSpeed;
         }
 
+        [Inject]
+        private void SetInitialReferences(IMoveBall moveBall)
+        {
+            moveBallBehavior = moveBall;
+        }
+
         private void SetVelocity(EventData obj)
         {
             if (obj.Code == 0)
             {
-                float[] args = (float[])obj.CustomData; // [0]: random number, [1]: 1 for positive direction and -1 for the negative one.
-                myrb.velocity = new Vector2(ballInitialSpeed * args[1], args[0]);
+                myrb.velocity = moveBallBehavior.SetVelocity((float[])obj.CustomData);
             }
-        }
-
-        private void SendInitialVelocityToClients()
-        {
-            float chosenRandomAngle = ChooseXAngle(Random.Range(-2f, 2f));
-
-            float[] eventArgs = new float[2] { chosenRandomAngle, 1 }; // first argument is the velocity. second one determines the direction.
-
-            PhotonNetwork.RaiseEvent(0, eventArgs,
-                new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                new SendOptions { Reliability = true });
-        }
-
-        public float ChooseXAngle(float randomAngle)
-        {
-            if (randomAngle > -.2f && randomAngle < .2f)
-            {
-                if (randomAngle.Equals(0))
-                {
-                    randomAngle = angleOffset; //shift 0.5
-                }
-                else
-                {
-                    randomAngle += randomAngle / Mathf.Abs(randomAngle) * angleOffset;
-                }
-            }
-
-            return randomAngle;
         }
 
         IEnumerator WaitForTheClientToJoin()
@@ -97,76 +77,18 @@ namespace Pong.MP
             float speed = lastVelocity.magnitude;
             ContactPoint2D contactPoint = collision.contacts[0];
 
-            Vector3 myDirection = Vector3.Reflect(lastVelocity.normalized, contactPoint.normal);
-            Vector2 myVelocity = myDirection * Mathf.Max(speed, 0);
-
-            if (lastVelocity.x * myDirection.x < 0) //if ball hits the players, it toggles direction :)
-            {
-                //Shrink the players size
-                ShrinkPlayersSize();
-
-                myVelocity = UpdateVelocity(myDirection, myVelocity);
-            }
-
-            myrb.velocity = myVelocity;
-        }
-
-        public Vector2 UpdateVelocity(Vector3 myDirection, Vector2 myVelocity)
-        {
-            myVelocity += myDirection.x * new Vector2(acceleration, 0);
-
-            if (Mathf.Abs(myVelocity.x) > maxSpeed) //if it reaches max speed.
-            {
-                myVelocity = new Vector2(maxSpeed * myDirection.x, myVelocity.y);
-            }
-
-            return myVelocity;
-        }
-
-        private void ShrinkPlayersSize()
-        {
-            if (playersListEmpty) //Getting all players
-            {
-                playersObjects = GameObject.FindGameObjectsWithTag("Player");
-
-                if (playersObjects.Length.Equals(2))
-                    playersListEmpty = false;
-            }
-
-            foreach (GameObject item in playersObjects)
-            {
-                Vector3 playerLocalScale = item.transform.localScale;
-
-                if (playerLocalScale.y >= minPlayerSize)
-                {
-                    item.transform.localScale = new Vector3(playerLocalScale.x, playerLocalScale.y - playershrinkVolume, 0);
-                }
-            }
+            myrb.velocity = moveBallBehavior.ReflectBall(speed, contactPoint, lastVelocity);
         }
 
         private void OnTriggerEnter2D(Collider2D other) //The ball hits the bonus bars
         {
             if (other.CompareTag("OppBar"))
             {
-                if (!PhotonNetwork.IsMasterClient)
-                {
-                    PhotonNetwork.RaiseEvent(1, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
-                }
-                else
-                {
-                    PhotonNetwork.RaiseEvent(3, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
-                }
+                moveBallBehavior.OpponentScored(other.tag);
             }
             else
             {
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    PhotonNetwork.RaiseEvent(1, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
-                }
-                else
-                {
-                    PhotonNetwork.RaiseEvent(3, other.tag, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Reliability = true });
-                }
+                moveBallBehavior.PlayerScored(other.tag);
             }
         }
 
@@ -184,44 +106,14 @@ namespace Pong.MP
             transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             transform.position = Vector3.zero;
 
-            if (playersObjects.Length.Equals(2))
-            {
-                foreach (var item in playersObjects)
-                {
-                    item.transform.localScale = new Vector3(0.02f, 0.5f, 1f);
-                }
-            }
-            else
-            {
-                Debug.LogError("Player list length is less than 2");
-            }
+            moveBallBehavior.ResetPlayersScale();
         }
 
         private IEnumerator RestartSetPoint(int seconds, string tag)
         {
             yield return new WaitForSeconds(seconds);
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                float randomNumber = ChooseXAngle(Random.Range(-2f, 2f));
-
-                if (tag.Equals("OppBar"))
-                {
-                    float[] eventArgs = new float[2] { randomNumber, 1f }; // first argument is the velocity. Second one determines the direction.
-
-                    PhotonNetwork.RaiseEvent(0, eventArgs,
-                        new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                        new SendOptions { Reliability = true });
-                }
-                else
-                {
-                    float[] eventArgs = new float[2] { randomNumber, -1f }; // first argument is the velocity. second one determines the direction.
-
-                    PhotonNetwork.RaiseEvent(0, eventArgs,
-                        new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                        new SendOptions { Reliability = true });
-                }
-            }
+            moveBallBehavior.RestartSetPoint(tag);
         }
     }
 }

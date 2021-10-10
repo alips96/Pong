@@ -32,10 +32,9 @@ namespace Tests
         [TestCase(-.02f, -.52f)]
         public void TestInitialVelocity(float randomInput, float expected)
         {
-            GameObject go = new GameObject();
-            BallMovement ballMovementScript = go.AddComponent<BallMovement>();
+            BallMovementModel moveBallScript = new BallMovementModel();
 
-            float angle = ballMovementScript.ChooseXAngle(randomInput);
+            float angle = moveBallScript.ChooseXAngle(randomInput);
 
             Assert.AreEqual(expected, angle);
         }
@@ -46,14 +45,13 @@ namespace Tests
         [TestCase(-1, -20f, -15f)]
         public void TestSubsequentVelocity(float dx, float vx, float evx)
         {
-            GameObject go = new GameObject();
-            BallMovement ballMovementScript = go.AddComponent<BallMovement>();
+            BallMovementModel moveBallScript = new BallMovementModel();
 
-            Vector2 velocity = ballMovementScript.UpdateVelocity(new Vector3(dx, -.1f, 0), new Vector2(vx, -.6f));
+            Vector2 velocity = moveBallScript.UpdateVelocity(new Vector3(dx, -.1f, 0), new Vector2(vx, -.6f));
 
-            if (Mathf.Abs(vx) > ballMovementScript.maxSpeed)
+            if (Mathf.Abs(vx) > moveBallScript.maxSpeed)
             {
-                Assert.AreEqual(dx * ballMovementScript.maxSpeed, velocity.x);
+                Assert.AreEqual(dx * moveBallScript.maxSpeed, velocity.x);
             }
             else
             {
