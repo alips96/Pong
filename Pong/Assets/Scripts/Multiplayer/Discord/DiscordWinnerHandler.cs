@@ -21,30 +21,29 @@ namespace Pong.MP.Discord
 
         private void HandleDiscordWinner(EventData obj)
         {
-            //Remove this code to re enable bot notifications.
-            //if (!obj.Code.Equals(2)) //game over event
-            //    return;
+            if (!obj.Code.Equals(2)) //game over event
+                return;
 
-            //if (!PhotonNetwork.IsMasterClient)
-            //    return;
+            if (!PhotonNetwork.IsMasterClient)
+                return;
 
-            //Player[] roomPlayers = PhotonNetwork.PlayerList;
+            Player[] roomPlayers = PhotonNetwork.PlayerList;
 
-            //if (roomPlayers.Length.Equals(2))
-            //{
-            //    if ((bool)obj.CustomData) //I won
-            //    {
-            //        SendDiscordNotif(roomPlayers[0].NickName, roomPlayers[1].NickName);
-            //    }
-            //    else //opponent won
-            //    {
-            //        SendDiscordNotif(roomPlayers[1].NickName, roomPlayers[0].NickName);
-            //    }
-            //}
-            //else
-            //{
-            //    Debug.LogWarning("Current room player count: " + roomPlayers.Length + " ,so the discord notif won't be sent!");
-            //}
+            if (roomPlayers.Length.Equals(2))
+            {
+                if ((bool)obj.CustomData) //I won
+                {
+                    SendDiscordNotif(roomPlayers[0].NickName, roomPlayers[1].NickName);
+                }
+                else //opponent won
+                {
+                    SendDiscordNotif(roomPlayers[1].NickName, roomPlayers[0].NickName);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Current room player count: " + roomPlayers.Length + " ,so the discord notif won't be sent!");
+            }
         }
 
         private void SendDiscordNotif(string winner, string loser)

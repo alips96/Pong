@@ -22,17 +22,16 @@ namespace Pong.MP.Discord
 
         private void DisplayLoginMessage(string name)
         {
-            //Remove this code to re enable bot notifications.
-            //var request = new ExecuteCloudScriptRequest
-            //{
-            //    FunctionName = "userLoggedIn",
-            //    FunctionParameter = new
-            //    {
-            //        playerName = name
-            //    }
-            //};
+            var request = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "userLoggedIn",
+                FunctionParameter = new
+                {
+                    playerName = name
+                }
+            };
 
-            //PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
+            PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
         }
 
         private void OnMessageDisplayed(ExecuteCloudScriptResult result)

@@ -22,18 +22,17 @@ namespace Pong.MP.Discord
 
         private void DisplayRoomNotification(string host, string guest)
         {
-            //Remove this code to re enable bot notifications.
-            //var request = new ExecuteCloudScriptRequest
-            //{
-            //    FunctionName = "matchKickedOff",
-            //    FunctionParameter = new
-            //    {
-            //        hostName = host,
-            //        guestName = guest
-            //    }
-            //};
+            var request = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "matchKickedOff",
+                FunctionParameter = new
+                {
+                    hostName = host,
+                    guestName = guest
+                }
+            };
 
-            //PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
+            PlayFabClientAPI.ExecuteCloudScript(request, OnMessageDisplayed, OnError);
         }
 
         private void OnMessageDisplayed(ExecuteCloudScriptResult result)
