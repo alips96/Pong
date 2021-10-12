@@ -101,7 +101,7 @@ namespace Pong.General
 
         internal void CallEventToggleInvitationUI()
         {
-            EventToggleInvitationUI.Invoke();
+            EventToggleInvitationUI?.Invoke();
         }
     }
 }

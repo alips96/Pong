@@ -3,6 +3,7 @@ using Photon.Realtime;
 using UnityEngine;
 using Pong.General;
 using Zenject;
+using Photon.Pun;
 
 namespace Pong.MP
 {
@@ -16,15 +17,32 @@ namespace Pong.MP
         private EventMaster eventMaster;
         private Transform parentTransform;
 
+        private GameObject inviteButtonObject;
+
         private void OnEnable()
         {
-            eventMaster.EventToggleInvitationUI += ToggleInvitationButton;
-            transform.SetParent(parentTransform);
+            eventMaster.EventToggleInvitationUI += CheckToActivateInviteButton;
+
+            CheckToActivateInviteButton();
         }
 
         private void OnDisable()
         {
-            eventMaster.EventToggleInvitationUI -= ToggleInvitationButton;
+            eventMaster.EventToggleInvitationUI -= CheckToActivateInviteButton;
+
+            CheckToActivateInviteButton();
+        }
+
+        private void CheckToActivateInviteButton()
+        {
+            if (PhotonNetwork.InRoom)
+            {
+                inviteButtonObject.SetActive(!inviteButtonObject.activeSelf);
+            }
+            else
+            {
+                inviteButtonObject.SetActive(false);
+            }
         }
 
         [Inject]
@@ -32,12 +50,9 @@ namespace Pong.MP
         {
             eventMaster = _eventMaster;
             parentTransform = _parentTransform;
-        }
 
-        private void ToggleInvitationButton()
-        {
-            GameObject inviteButtonObject = transform.GetChild(2).gameObject; //getchild(2) will give us the invite button transform.
-            inviteButtonObject.SetActive(!inviteButtonObject.activeSelf);
+            transform.SetParent(parentTransform);
+            inviteButtonObject = transform.GetChild(2).gameObject;
         }
 
         public void SetUI(FriendInfo friend)
@@ -57,7 +72,7 @@ namespace Pong.MP
 
         public void InviteFriend() //Called by invite button
         {
-            if (Photon.Pun.PhotonNetwork.InRoom)
+            if (PhotonNetwork.InRoom)
             {
                 Debug.Log("Inviting friend Action " + friendInfo.UserId);
                 eventMaster.CallEventInviteFriend(friendInfo.UserId);
