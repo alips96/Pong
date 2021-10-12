@@ -1,11 +1,10 @@
 ﻿using PlayFab.ClientModels;
 using Pong.MP;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Pong.General
 {
-    public class EventMaster : MonoBehaviour
+    public class EventMaster
     {
         public delegate void UserEventHandler(string name);
         public event UserEventHandler EventUserLoggedIn;
@@ -102,7 +101,7 @@ namespace Pong.General
 
         internal void CallEventToggleInvitationUI()
         {
-            EventToggleInvitationUI.Invoke();
+            EventToggleInvitationUI?.Invoke();
         }
     }
 }

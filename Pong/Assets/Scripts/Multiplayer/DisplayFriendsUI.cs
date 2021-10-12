@@ -2,26 +2,25 @@
 using Pong.General;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Pong.MP
 {
     public class DisplayFriendsUI : MonoBehaviour
     {
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         [SerializeField] private Transform friendContainer;
-        [SerializeField] private FriendsUI friendPrefab;
+        private FriendsUI.Factory friendsUIFactory;
 
         private void OnEnable()
         {
-            SetInitialReferences();
-
-            playFabMaster.EventDisplayFriends += DisplayFriends;
+            eventMaster.EventDisplayFriends += DisplayFriends;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventDisplayFriends -= DisplayFriends;
+            eventMaster.EventDisplayFriends -= DisplayFriends;
         }
 
         private void DisplayFriends(List<FriendInfo> friendList)
@@ -33,14 +32,18 @@ namespace Pong.MP
 
             foreach (FriendInfo item in friendList)
             {
-                FriendsUI friendUI = Instantiate(friendPrefab, friendContainer);
+                //Instantiating friends ui prefab and pass the friendcontainer as its parent.
+                FriendsUI friendUI = friendsUIFactory.Create(friendContainer);
+
                 friendUI.SetUI(item);
             }
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster, FriendsUI.Factory _friendsUIFactory)
         {
-            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
+            friendsUIFactory = _friendsUIFactory;
         }
     }
 }

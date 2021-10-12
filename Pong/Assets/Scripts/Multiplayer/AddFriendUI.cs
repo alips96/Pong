@@ -1,21 +1,18 @@
 ﻿using Pong.General;
 using UnityEngine;
+using Zenject;
 
 namespace Pong.MP
 {
     public class AddFriendUI : MonoBehaviour
     {
         [SerializeField] private string displayName;
-        private EventMaster PlayFabMaster;
+        private EventMaster eventMaster;
 
-        private void Start()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            SetInitialReferences();
-        }
-
-        private void SetInitialReferences()
-        {
-            PlayFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         public void SetAddFriendName(string someName) //Called by add friend input field.
@@ -31,7 +28,7 @@ namespace Pong.MP
                 return;
             }
 
-            PlayFabMaster.CallEventAddFriend(displayName);
+            eventMaster.CallEventAddFriend(displayName);
         }
     }
 }

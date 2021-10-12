@@ -269,7 +269,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   friendNameText: {fileID: 273555666893242335}
   friendStatusImage: {fileID: 1524720568861330790}
-  friendsUIParent: {fileID: 0}
 --- !u!1 &273555666893242321
 GameObject:
   m_ObjectHideFlags: 0

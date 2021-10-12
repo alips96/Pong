@@ -2,23 +2,22 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP.Discord
 {
     public class DiscordRoomHandler : MonoBehaviour
     {
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
         private void OnEnable()
         {
-            SetInitialReferenes();
-
-            playFabMaster.EventDiscordJoinMessage += DisplayRoomNotification;
+            eventMaster.EventDiscordJoinMessage += DisplayRoomNotification;
         }
 
         private void OnDisable()
         {
-            playFabMaster.EventDiscordJoinMessage -= DisplayRoomNotification;
+            eventMaster.EventDiscordJoinMessage -= DisplayRoomNotification;
         }
 
         private void DisplayRoomNotification(string host, string guest)
@@ -47,9 +46,10 @@ namespace Pong.MP.Discord
             Debug.LogError(error.GenerateErrorReport());
         }
 
-        private void SetInitialReferenes()
+        [Inject]
+        private void SetInitialReferenes(EventMaster _eventMaster)
         {
-            playFabMaster = GetComponentInParent<EventMaster>();
+            eventMaster = _eventMaster;
         }
     }
 }

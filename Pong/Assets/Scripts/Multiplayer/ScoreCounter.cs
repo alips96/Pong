@@ -2,7 +2,7 @@
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Realtime;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -12,7 +12,7 @@ namespace Pong.MP
         [SerializeField] private Text playerScoreText;
         [SerializeField] private byte winScore = 10;
 
-        private byte playerScore, opponentScore = 0;
+        private IScoreHandler_MP scoreHandler;
 
         private void OnEnable()
         {
@@ -24,37 +24,23 @@ namespace Pong.MP
             PhotonNetwork.NetworkingClient.EventReceived -= IncrementScore;
         }
 
+        [Inject]
+        private void SetInitialReferences(IScoreHandler_MP _scoreHandler)
+        {
+            scoreHandler = _scoreHandler;
+        }
+
         private void IncrementScore(EventData obj)
         {
             if (obj.Code == 1) //if the ball hits the bonus bars
             {
                 if (obj.CustomData.ToString().Equals("OppBar")) //Player Scored!
                 {
-                    playerScoreText.text = (++playerScore).ToString();
-
-                    if (playerScore == winScore) //master player won
-                    {
-                        if (PhotonNetwork.IsMasterClient)
-                        {
-                            PhotonNetwork.RaiseEvent(2, true,
-                                new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                                new SendOptions { Reliability = true });
-                        }
-                    }
+                    playerScoreText.text = scoreHandler.PlayerScored(winScore).ToString();
                 }
                 else
                 {
-                    opponentScoreText.text = (++opponentScore).ToString();
-
-                    if (opponentScore == winScore) //second player won
-                    {
-                        if (PhotonNetwork.IsMasterClient)
-                        {
-                            PhotonNetwork.RaiseEvent(2, false,
-                                new RaiseEventOptions { Receivers = ReceiverGroup.All },
-                                new SendOptions { Reliability = true });
-                        }
-                    }
+                    opponentScoreText.text = scoreHandler.OpponentScored(winScore).ToString();
                 }
             }
         }

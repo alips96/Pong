@@ -1,6 +1,7 @@
 ﻿using Pong.General;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Pong.MP
 {
@@ -10,11 +11,12 @@ namespace Pong.MP
         private string roomName;
         [SerializeField] private Text friendNameText;
 
-        private EventMaster playFabMaster;
+        private EventMaster eventMaster;
 
-        private void Start()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMaster = GameObject.Find("Network Manager").GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         public void Initialize(string friend, string room)
@@ -28,14 +30,17 @@ namespace Pong.MP
         public void AcceptInvite() //Called by invite button
         {
             Debug.Log("Accept Invite Action");
-            playFabMaster.CallEventInviteAccepted(this);
-            playFabMaster.CallEventRoomInvitationAccepted(roomName);
+
+            eventMaster.CallEventInviteAccepted(this);
+            eventMaster.CallEventRoomInvitationAccepted(roomName);
         }
 
         public void DeclineInvite() //Called by remove button
         {
             Debug.Log("Decline Invite Action");
-            playFabMaster.CallEventInviteDeclined(this);
+            eventMaster.CallEventInviteDeclined(this);
         }
+
+        public class Factory : PlaceholderFactory<InviteUI> { }
     }
 }

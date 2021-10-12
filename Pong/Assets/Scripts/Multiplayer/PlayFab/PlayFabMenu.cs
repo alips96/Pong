@@ -3,12 +3,13 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
 using Pong.General;
+using Zenject;
 
 namespace Pong.MP.PlayFab
 {
     public class PlayFabMenu : MonoBehaviour
     {
-        private EventMaster playFabMasterScript;
+        private EventMaster eventMaster;
 
         [SerializeField] private GameObject loginMenu;
         [SerializeField] private GameObject mainMenu;
@@ -19,19 +20,18 @@ namespace Pong.MP.PlayFab
 
         private void OnEnable()
         {
-            SetInitialReferences();
-
-            playFabMasterScript.EventUserLoggedIn += SetupMainMenu;
+            eventMaster.EventUserLoggedIn += SetupMainMenu;
         }
 
         private void OnDisable()
         {
-            playFabMasterScript.EventUserLoggedIn -= SetupMainMenu;
+            eventMaster.EventUserLoggedIn -= SetupMainMenu;
         }
 
-        private void SetInitialReferences()
+        [Inject]
+        private void SetInitialReferences(EventMaster _eventMaster)
         {
-            playFabMasterScript = GetComponent<EventMaster>();
+            eventMaster = _eventMaster;
         }
 
         private void SetupMainMenu(string displayName)
