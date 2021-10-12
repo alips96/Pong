@@ -1,11 +1,11 @@
 # Pong
 Online Multiplayer Pong Game
 
-I have developed this game using Unity, Microsoft Azure PlayFab, Photon Engine (photon cloud services), and Discord.
+I have developed this game using Unity, Microsoft Azure PlayFab, Photon Engine (Photon Cloud Services), and Discord. Zenject is also used as the dependency injection framework.
 
-The code is divided into four master folders. The general folder is for handling the ball movement and player movement. Why General?! Because these scripts are used both in single-player and multiplayer, no matter which game mode it is. The login menu contains all the code related to the login process. Multiplayer Folder has all the logic about photon, playfab, and discord. And then we have single player folder handling the single-player logic. No other external package is installed except the buttons set :)
+The code logic is implemented under the MVC architectural pattern. The data logic (Model) and the view are separated from the controller. For the key features of the system, strategy design pattern is used to enable future extensions of the behavior. The observer design pattern is mainly used for the modules interacting together. Unit tests are also implemented on some critical methods that have a decisive role in the gameplay. So far, all the unit tests are edit-mode tests.
 
-The observer design pattern is mainly used for the modules interacting together.
+The code is divided into five master folders. The general folder is for handling the ball movement and player movement. Why General?! Because these scripts are used both in single-player and multiplayer, no matter which game mode it is. The login menu contains all the code related to the login process. Multiplayer folder has all the logic about photon, playfab, and discord. And then we have single player folder handling the single-player logic. Last but no least, We have the installers folder that is the dependency injection container consisting of three mono installers for each scene. No other external package is installed except the buttons set :)
 
 The game starts by asking the player to log in. Each player has their account on the game server. For authentication, we make an API call to the playfab sever. 
 After logging in, we will have to connect to the photon master server with our playfab username. The playfab username would be our photon nickname and we connect to the photon master server using our nickname. Then based on the server settings from the photon dashboard, we connect to the master server.
